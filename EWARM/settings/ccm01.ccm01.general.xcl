@@ -1,0 +1,15 @@
+"F:\IAR Systems\Embedded Workbench 7.5\arm\bin\armproc.dll" 
+
+"F:\IAR Systems\Embedded Workbench 7.5\arm\bin\armstlink2.dll" 
+
+"F:\Courses\SJTU\2023Spring\SensorDesign\IARprjs\ccm01\EWARM\ccm01\Exe\ccm01.out" 
+
+--plugin "F:\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
+
+--device_macro "F:\IAR Systems\Embedded Workbench 7.5\arm\config\debugger\ST\STM32L0xx.dmac" 
+
+--flash_loader "F:\IAR Systems\Embedded Workbench 7.5\arm\config\flashloader\ST\FlashSTM32L0xxx8.board" 
+
+
+
+

@@ -1,0 +1,8 @@
+{
+    "iar.projectFile": "f:\\Courses\\SJTU\\2023Spring\\SensorDesign\\IARprjs\\ccm01\\EWARM\\ccm01.ewp",
+    "iar.enabled": true,
+    "iar.installationPath": "F:\\IAR Systems\\Embedded Workbench 7.5\\",
+    "files.associations": {
+        "stdio.h": "c"
+    }
+}
