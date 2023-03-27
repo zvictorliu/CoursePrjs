@@ -74,7 +74,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   float ADCvol = 0;
   float ADCvalSum = 0;
-  uint32_t cdct = 0;
+  // uint32_t cdct = 0;
   uint8_t ii = 0;
   uint8_t adcFlag = 0;
   /* USER CODE END 1 */
@@ -99,7 +99,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC_Init();
-  MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
   printf("Ready to detect!\n");
   printf("press button to start\n");
@@ -191,9 +190,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_LPUART1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
-  PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
