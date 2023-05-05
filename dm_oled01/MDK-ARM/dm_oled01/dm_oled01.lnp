@@ -5,6 +5,7 @@
 "dm_oled01\gpio.o"
 "dm_oled01\usart.o"
 "dm_oled01\spi.o"
+"dm_oled01\tim.o"
 "dm_oled01\usb_otg.o"
 "dm_oled01\stm32l4xx_it.o"
 "dm_oled01\stm32l4xx_hal_msp.o"
