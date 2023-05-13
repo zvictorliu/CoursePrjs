@@ -57,6 +57,8 @@ float Signal_Duty, Signal_Freq, Signal_Cycle;
 uint32_t Clk_Internal; 
 
 u8 t=' ';
+uint32_t times_cnt;
+float refFreq;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,7 +111,7 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   // printf("ready to go!\n");
-  OLED_Init();
+  // OLED_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -131,8 +133,8 @@ int main(void)
 		// OLED_ShowString(0,48,"ASCII:",16);  
 		// OLED_ShowString(63,48,"CODE:",16);
 		// OLED_ShowChar(48,48,t,16);//显示ASCII字符	   
-		t++;
-		if (t > 50) t= 0;
+		// t++;
+		// if (t > 50) t= 0;
 		// OLED_ShowNum(103,48,t,3,16);
 		// OLED_Refresh();
 		// HAL_Delay(500);
@@ -157,26 +159,30 @@ int main(void)
     if (HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_SET){ //*pc13 push button
         // HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
 
-        	HAL_Delay(500);
-          OLED_Clear();
-          // OLED_ShowString(10,24,"Ready to go",16); 
-		      // OLED_ShowNum(54,20,666,3,24); // show num 24
-          OLED_ShowChinese(0,0,0,16);//纸
-		      OLED_ShowChinese(18,0,1,16);//张
-		      OLED_ShowChinese(36,0,2,16);//数
-		      OLED_ShowChinese(54,0,3,16);//量
-		      OLED_ShowChinese(72,0,4,16);//：
-          OLED_Refresh();
+        	// HAL_Delay(500);
+          // OLED_Clear();
+          // // OLED_ShowString(10,24,"Ready to go",16); 
+		      // // OLED_ShowNum(54,20,666,3,24); // show num 24
+          // OLED_ShowChinese(0,0,0,16);//纸
+		      // OLED_ShowChinese(18,0,1,16);//张
+		      // OLED_ShowChinese(36,0,2,16);//数
+		      // OLED_ShowChinese(54,0,3,16);//量
+		      // OLED_ShowChinese(72,0,4,16);//：
+          // OLED_Refresh();
 
+        TIM4->CNT = 0;
+        times_cnt = 0;
         flag = 1;
         //todo Open TIM4 (IT)
         Measure_State = 0;
         Clk_Internal = HAL_RCC_GetHCLKFreq();
         // printf("HCLK: %d\n", Clk_Internal);
+        printf("begin to detect\n");
+        refFreq = Clk_Internal / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
         __HAL_TIM_ENABLE_IT(&htim4, TIM_IT_UPDATE); // 溢出中断
         HAL_TIM_IC_Start_IT(&htim4, TIM_CHANNEL_4); // 捕获中断
-        // printf("begin to detect\n");
+        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
     }
 
     if (flag){
@@ -253,55 +259,19 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // 溢出回调
 {
-  if (Measure_State != 0){
-    Num_OvEvent++;
+  if (times_cnt) {
+
+    printf("freq: %.2f\n", times_cnt * refFreq);
+
+    flag = 0;
+    HAL_TIM_IC_Stop_IT(&htim4, TIM_CHANNEL_4);
+    __HAL_TIM_DISABLE_IT(&htim4, TIM_IT_UPDATE);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
   }
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
-  if (Measure_State == 0){
-      Capture_1st = __HAL_TIM_GET_COUNTER(htim); // 读取计数器值
-      // printf("C1: %d\n", Capture_1st);
-      // printf("1st rising\n");
-      Num_OvEvent = 0;
-      Measure_State = 1;
-      __HAL_TIM_SET_CAPTUREPOLARITY(&htim4,TIM_CHANNEL_4,TIM_INPUTCHANNELPOLARITY_FALLING);
-  }
-  else if (Measure_State == 1){
-      Capture_2nd = __HAL_TIM_GET_COUNTER(htim);
-      // printf("C2: %d\n", Capture_2nd);
-      // printf("1st falling\n");
-      Measure_State = 2;
-      Front_Num_OvEvent = Num_OvEvent;
-      __HAL_TIM_SET_CAPTUREPOLARITY(&htim4,TIM_CHANNEL_4,TIM_INPUTCHANNELPOLARITY_RISING);
-  }
-  else if (Measure_State == 2){
-      Capture_3rd = __HAL_TIM_GET_COUNTER(htim);
-      // printf("C3: %d\n", Capture_3rd);
-      // printf("2nd rising\n");
-      Total_Num_OvEvent = Num_OvEvent;
-      Signal_Freq = (float)(Clk_Internal / (TIM4->PSC + 1))/(float)(Capture_3rd - Capture_1st + (Total_Num_OvEvent * (TIM4->ARR + 1)));
-      Signal_Cycle = (1.0f)/Signal_Freq;
-      Signal_Duty = (float)(Capture_2nd - Capture_1st + Front_Num_OvEvent*(TIM4->ARR + 1)) / (float) (Capture_3rd - Capture_1st + Total_Num_OvEvent*(TIM4->ARR + 1));
-      Signal_Duty *= 100u;
-
-      // printf("frequency: %.2f\n", Signal_Freq);
-      // printf("cycle: %.2f\n", Signal_Cycle);
-      // printf("Duty: %.2f%%\n", Signal_Duty);
-
-      if (t >= 10) OLED_ShowNum(30,30,t,2,24);
-      else OLED_ShowNum(30,30,t,1, 24);
-      OLED_Refresh();
-      printf("%d\n", t);
-      // HAL_Delay(200); // 这里delay不知道为什么会阻塞
-      // printf("paper counted!!!\n");
-
-      // HAL_TIM_IC_Stop_IT(&htim4, TIM_CHANNEL_4);
-      // __HAL_TIM_DISABLE_IT(&htim4, TIM_IT_UPDATE);
-      // flag = 0;
-      Measure_State = 0;
-      // printf("repeat\n");
-  }
+  ++times_cnt; 
 }
 /* USER CODE END 4 */
 
