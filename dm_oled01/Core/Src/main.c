@@ -49,16 +49,9 @@
 
 /* USER CODE BEGIN PV */
 uint8_t flag = 0;
-uint8_t Measure_State = 0;
-uint8_t Num_OvEvent = 0;
-uint8_t Capture_1st, Capture_2nd, Capture_3rd;
-uint8_t Front_Num_OvEvent, Total_Num_OvEvent;
-float Signal_Duty, Signal_Freq, Signal_Cycle;
-uint32_t Clk_Internal; 
-
+uint8_t finish = 0;
 u8 t=' ';
-uint32_t times_cnt;
-float refFreq;
+float Clk_Internal;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,9 +102,10 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  // printf("ready to go!\n");
-  // OLED_Init();
+  printf("ready to go!\n");
+  OLED_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -156,41 +150,30 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-    if (HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_SET){ //*pc13 push button
-        // HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
-
-        	// HAL_Delay(500);
-          // OLED_Clear();
-          // // OLED_ShowString(10,24,"Ready to go",16); 
-		      // // OLED_ShowNum(54,20,666,3,24); // show num 24
-          // OLED_ShowChinese(0,0,0,16);//纸
-		      // OLED_ShowChinese(18,0,1,16);//张
-		      // OLED_ShowChinese(36,0,2,16);//数
-		      // OLED_ShowChinese(54,0,3,16);//量
-		      // OLED_ShowChinese(72,0,4,16);//：
-          // OLED_Refresh();
-
-        TIM4->CNT = 0;
-        times_cnt = 0;
+    if (HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_SET){ //*pc13 push button 
+        // HAL_Delay(200);
         flag = 1;
-        //todo Open TIM4 (IT)
-        Measure_State = 0;
-        Clk_Internal = HAL_RCC_GetHCLKFreq();
-        // printf("HCLK: %d\n", Clk_Internal);
-        printf("begin to detect\n");
-        refFreq = Clk_Internal / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
-        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-        __HAL_TIM_ENABLE_IT(&htim4, TIM_IT_UPDATE); // 溢出中断
-        HAL_TIM_IC_Start_IT(&htim4, TIM_CHANNEL_4); // 捕获中断
-        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+          HAL_Delay(500);
+          OLED_Clear();
+          OLED_ShowChinese(0,0,0,16);//纸
+		      OLED_ShowChinese(18,0,1,16);//张
+		      OLED_ShowChinese(36,0,2,16);//数
+		      OLED_ShowChinese(54,0,3,16);//量
+		      OLED_ShowChinese(72,0,4,16);//：
+          OLED_Refresh();
     }
-
     if (flag){
-      // todo binking the LED
-      HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
-      HAL_Delay(300);
-      HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
-      HAL_Delay(300);
+        //todo Open TIM4 (IT)
+        Clk_Internal = HAL_RCC_GetHCLKFreq() / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
+        printf("clk_internal: %.2f\n", Clk_Internal);
+        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM
+        HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+        HAL_TIM_Base_Start(&htim2);
+        HAL_TIM_Base_Start_IT(&htim4);
+        TIM4->CNT = 0;
+        TIM2->CNT = 0;
+        flag = 0;
+        finish = 1;
     }
   }
   /* USER CODE END 3 */
@@ -259,20 +242,19 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // 溢出回调
 {
-  if (times_cnt) {
-
-    printf("freq: %.2f\n", times_cnt * refFreq);
-
-    flag = 0;
-    HAL_TIM_IC_Stop_IT(&htim4, TIM_CHANNEL_4);
-    __HAL_TIM_DISABLE_IT(&htim4, TIM_IT_UPDATE);
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  if (finish) {
+    printf("freq: %d\n", TIM2->CNT);
+    finish = 0;
+    HAL_TIM_Base_Stop_IT(&htim4);
+    HAL_TIM_Base_Stop(&htim2);
+    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+    t = (u8) ((TIM2->CNT) % 100);
+    printf("%d\n", t);
+    OLED_ShowNum(54,32,t,2,24);
+    OLED_Refresh();
   }
 }
 
-void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
-  ++times_cnt; 
-}
 /* USER CODE END 4 */
 
 /**

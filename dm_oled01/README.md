@@ -24,3 +24,35 @@ OLED_Refresh();
 103,48 是坐标；3是位数，表示显示的是`024`；16是字号大小
 
 注意，字号只有16，24，32，64，分别对应于`oledfont.h`的Hzk1~4
+
+
+
+CLK(SCK): PA5
+
+DIN(SDA): PA7
+
+RST: PD2
+
+DC: PB5
+
+CS(NSS): PA4
+
+没看懂其中配置的：
+
+PC12 PB6 好像没意义？
+
+
+
+GPIO
+
+```c
+GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+GPIO_InitStruct.Pull = GPIO_PULLUP;
+GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+```
+
+
+
+OLED_init有对SPI引脚的配置，而GPIO没有，应该在SPI
+
+看来重新配置是不可避免的了

@@ -39,4 +39,4 @@ dm_oled01/oled.o: ..\Core\Src\oled.c ..\Core\Inc\oled.h \
   ..\Drivers\STM32L4xx_HAL_Driver\Inc\stm32l4xx_hal_uart.h \
   ..\Drivers\STM32L4xx_HAL_Driver\Inc\stm32l4xx_hal_uart_ex.h \
   ..\Core\Inc\main.h E:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\Core\Inc\oledfont.h ..\Core\Inc\delay.h
+  ..\Core\Inc\oledfont.h ..\Core\Inc\delay.h ..\Core\Inc\gpio.h
