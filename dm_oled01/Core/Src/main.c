@@ -98,11 +98,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
-  MX_SPI1_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM2_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   printf("ready to go!\n");
   OLED_Init();
@@ -165,7 +165,7 @@ int main(void)
     if (flag){
         //todo Open TIM4 (IT)
         Clk_Internal = HAL_RCC_GetHCLKFreq() / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
-        printf("clk_internal: %.2f\n", Clk_Internal);
+        // printf("clk_internal: %.2f\n", Clk_Internal);
         HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM
         HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
         HAL_TIM_Base_Start(&htim2);
@@ -248,7 +248,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // 溢出回调
     HAL_TIM_Base_Stop_IT(&htim4);
     HAL_TIM_Base_Stop(&htim2);
     HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
-    t = (u8) ((TIM2->CNT) % 100);
+    t = (uint8_t) ((TIM2->CNT) % 100);
     printf("%d\n", t);
     OLED_ShowNum(54,32,t,2,24);
     OLED_Refresh();

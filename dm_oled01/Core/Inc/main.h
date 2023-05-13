@@ -59,12 +59,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define OLED_CS_Pin GPIO_PIN_4
-#define OLED_CS_GPIO_Port GPIOA
+#define SDA_Pin GPIO_PIN_1
+#define SDA_GPIO_Port GPIOC
 #define SCK_Pin GPIO_PIN_5
 #define SCK_GPIO_Port GPIOA
-#define SDA_Pin GPIO_PIN_7
-#define SDA_GPIO_Port GPIOA
+#define SCKB10_Pin GPIO_PIN_10
+#define SCKB10_GPIO_Port GPIOB
+#define OLED_CS_Pin GPIO_PIN_12
+#define OLED_CS_GPIO_Port GPIOB
 #define LD3_Pin GPIO_PIN_14
 #define LD3_GPIO_Port GPIOB
 #define USB_OverCurrent_Pin GPIO_PIN_5
