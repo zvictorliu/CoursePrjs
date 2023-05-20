@@ -87,7 +87,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
     GPIO_InitStruct.Alternate = GPIO_AF3_SPI2;
     HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = SCKB10_Pin|OLED_CS_Pin;
+    GPIO_InitStruct.Pin = SCK_Pin|OLED_CS_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -118,7 +118,7 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
     */
     HAL_GPIO_DeInit(SDA_GPIO_Port, SDA_Pin);
 
-    HAL_GPIO_DeInit(GPIOB, SCKB10_Pin|OLED_CS_Pin);
+    HAL_GPIO_DeInit(GPIOB, SCK_Pin|OLED_CS_Pin);
 
   /* USER CODE BEGIN SPI2_MspDeInit 1 */
 

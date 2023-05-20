@@ -38,6 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define caliNum 10
+#define slope 1000 //!通过理论拟合得出
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,10 +50,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t flag = 0;
-uint8_t finish = 0;
+uint8_t startFlag = 0;
+uint8_t endMeasureFlag = 0;
+uint8_t caliFlag = 1;
+uint8_t base; // 需校准
+uint8_t paper;
 u8 t=' ';
 float Clk_Internal;
+float frequency;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,7 +72,7 @@ int fputc(int ch, FILE *f)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+  
 /* USER CODE END 0 */
 
 /**
@@ -106,6 +112,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("ready to go!\n");
   OLED_Init();
+
+  // PA4 输出即可
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -151,8 +159,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
     if (HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_SET){ //*pc13 push button 
-        // HAL_Delay(200);
-        flag = 1;
+          startFlag = 1;
           HAL_Delay(500);
           OLED_Clear();
           OLED_ShowChinese(0,0,0,16);//纸
@@ -162,18 +169,19 @@ int main(void)
 		      OLED_ShowChinese(72,0,4,16);//：
           OLED_Refresh();
     }
-    if (flag){
+    // if (startFlag || caliFlag){
+    if (startFlag) {
         //todo Open TIM4 (IT)
+        // caliFlag = 0;
         Clk_Internal = HAL_RCC_GetHCLKFreq() / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
-        // printf("clk_internal: %.2f\n", Clk_Internal);
-        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM
-        HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM 扬声器响
+        HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET); // 绿灯
         HAL_TIM_Base_Start(&htim2);
         HAL_TIM_Base_Start_IT(&htim4);
         TIM4->CNT = 0;
         TIM2->CNT = 0;
-        flag = 0;
-        finish = 1;
+        startFlag = 0;
+        endMeasureFlag = 1;
     }
   }
   /* USER CODE END 3 */
@@ -242,17 +250,47 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // 溢出回调
 {
-  if (finish) {
-    printf("freq: %d\n", TIM2->CNT);
-    finish = 0;
-    HAL_TIM_Base_Stop_IT(&htim4);
-    HAL_TIM_Base_Stop(&htim2);
-    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
-    t = (uint8_t) ((TIM2->CNT) % 100);
-    printf("%d\n", t);
-    OLED_ShowNum(54,32,t,2,24);
-    OLED_Refresh();
+  if (htim->Instance == TIM4){
+      if (endMeasureFlag) {
+        endMeasureFlag = 0;
+        HAL_TIM_Base_Stop_IT(&htim4); // 后续可能改成连续测量
+        HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+        HAL_TIM_Base_Stop(&htim2);
+        HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+        // if (caliFlag) {
+        //     caliFlag = 0;
+        //     base = (TIM2->CNT) - slope * caliNum - slope/2 ;
+        //     // todo 持续一段时间后关闭，正式进入待测状态
+        //     HAL_Delay(3000);
+        // }
+        // else {
+          frequency = TIM2->CNT * Clk_Internal;
+          printf("freq: %.2f\n", frequency);
+
+          // printf("paper: %d \n", (TIM2->CNT - base) / slope);
+          // paper = (uint8_t) ((TIM2->CNT) % 100);
+          // // todo oled显示数量
+          // if (paper <= 0) {
+          //   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+          //   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+          //   printf("SHORT CIRCUIT\n");
+          //   OLED_ShowString(32,32,"SHORT CIRCUIT",16);
+          //   OLED_Refresh();
+          //   HAL_Delay(1000);
+          //   HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+          //   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+          // }
+          // else {
+          //   printf("$%d\n", paper); // my app
+          //   OLED_ShowNum(54,32,paper,2,24); // oled
+          //   OLED_Refresh();
+          // }
+
+        // }
+
+    }
   }
+  
 }
 
 /* USER CODE END 4 */
