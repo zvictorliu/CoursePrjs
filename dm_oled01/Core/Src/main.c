@@ -29,6 +29,7 @@
 #include "oled.h"
 #include "bmp.h"
 #include "stdio.h"
+#include "math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -38,8 +39,14 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define caliNum 10
-#define slope 1000 //!通过理论拟合得出
+// #define p3 -2.754473214725226e-10
+// #define p2 3.880617499823303e-06
+// #define p1 0.004462373429928
+// #define p0 -2.699917658824761
+#define p3 -2.430422433894448e-10
+#define p2 4.009034911700140e-06
+#define p1 0.005319481128602
+#define p0 -3.902463651665676
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,7 +62,7 @@ uint8_t endMeasureFlag = 0;
 uint8_t caliFlag = 1;
 uint8_t base; // 需校准
 uint8_t paper;
-u8 t=' ';
+float f_paper;
 float Clk_Internal;
 float frequency;
 /* USER CODE END PV */
@@ -168,13 +175,16 @@ int main(void)
 		      OLED_ShowChinese(54,0,3,16);//量
 		      OLED_ShowChinese(72,0,4,16);//：
           OLED_Refresh();
+          HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM 扬声器响
+          HAL_Delay(1000);
+          HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
     }
     // if (startFlag || caliFlag){
     if (startFlag) {
         //todo Open TIM4 (IT)
         // caliFlag = 0;
         Clk_Internal = HAL_RCC_GetHCLKFreq() / (float)((TIM4->PSC + 1)*(TIM4->ARR + 1));
-        HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // 启动PWM 扬声器响
+        
         HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET); // 绿灯
         HAL_TIM_Base_Start(&htim2);
         HAL_TIM_Base_Start_IT(&htim4);
@@ -254,38 +264,43 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // 溢出回调
       if (endMeasureFlag) {
         endMeasureFlag = 0;
         HAL_TIM_Base_Stop_IT(&htim4); // 后续可能改成连续测量
-        HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+        // HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
         HAL_TIM_Base_Stop(&htim2);
         HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
         // if (caliFlag) {
         //     caliFlag = 0;
-        //     base = (TIM2->CNT) - slope * caliNum - slope/2 ;
-        //     // todo 持续一段时间后关闭，正式进入待测状态
-        //     HAL_Delay(3000);
-        // }
+        //     base = 
         // else {
           frequency = TIM2->CNT * Clk_Internal;
-          printf("freq: %.2f\n", frequency);
+          f_paper = (p3*pow(frequency,3) + p2*pow(frequency, 2) + p1 * frequency + p0) + 0.5;
+          printf("freq: %.2f @%.2f\n", frequency, f_paper);
+          // printf("f_paper: %.3f\n", f_paper);
+          paper = (uint8_t) f_paper;
 
-          // printf("paper: %d \n", (TIM2->CNT - base) / slope);
-          // paper = (uint8_t) ((TIM2->CNT) % 100);
-          // // todo oled显示数量
-          // if (paper <= 0) {
-          //   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-          //   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
-          //   printf("SHORT CIRCUIT\n");
-          //   OLED_ShowString(32,32,"SHORT CIRCUIT",16);
-          //   OLED_Refresh();
-          //   HAL_Delay(1000);
-          //   HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
-          //   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
-          // }
-          // else {
-          //   printf("$%d\n", paper); // my app
-          //   OLED_ShowNum(54,32,paper,2,24); // oled
-          //   OLED_Refresh();
-          // }
-
+          // if (f_paper < 0) paper = 0;
+          // printf("$%d\n", paper);
+          // OLED_ShowNum(54,32,paper,2,24); // oled
+          // OLED_Refresh();
+          // startFlag = 1;
+          // todo oled显示数量
+          if (f_paper <= 0) {
+            printf("SHORT CIRCUIT\n");
+            OLED_ShowString(32,32,"SHORT CIRCUIT",16);
+            OLED_Refresh();
+            
+            HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+            HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+            HAL_Delay(1000);
+            HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+            HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+          }
+          else {
+            printf("$%d\n", paper); // my app
+            OLED_ShowNum(54,32,paper,2,24); // oled
+            OLED_Refresh();
+          }
+          
+          startFlag = 1;
         // }
 
     }

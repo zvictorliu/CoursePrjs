@@ -1,4 +1,5 @@
-
+#include <stdlib.h>
+#include <sstream>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QSerialPort>
@@ -54,7 +55,16 @@ void MainWindow::on_FindPort_clicked()
 void MainWindow::readData(QSerialPort *serialPort)
 {
     QByteArray data = serialPort->readAll();
-    // process or display the received data
-    ui->screen->display(data.toInt());
+    std::string str = data.toStdString();
+    if (str[0]== '$'){
+        std::istringstream ss(str.substr(1));
+        int num;
+        ss >> num;
+        // process or display the received data
+        ui->screen->display(num);
+    }
+    else {
+        ui->messageBar->setText(data);
+    }
 }
 
