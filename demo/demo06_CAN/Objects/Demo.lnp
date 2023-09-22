@@ -1,0 +1,11 @@
+--cpu ARM7TDMI
+".\objects\startup.o"
+".\objects\myi2c.o"
+".\objects\mylcd.o"
+".\objects\main.o"
+".\objects\canapp.o"
+".\objects\canfunc.o"
+--strict --scatter ".\Objects\Demo.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\Demo.map" -o .\Objects\Demo.axf

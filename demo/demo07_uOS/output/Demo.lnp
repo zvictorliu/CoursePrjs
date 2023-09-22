@@ -1,0 +1,22 @@
+--cpu ARM7TDMI
+".\output\bsp.o"
+".\output\main.o"
+".\output\startup.o"
+".\output\os_cpu_a.o"
+".\output\os_cpu_c.o"
+".\output\os_int_a.o"
+".\output\os_core.o"
+".\output\os_flag.o"
+".\output\os_mbox.o"
+".\output\os_mem.o"
+".\output\os_mutex.o"
+".\output\os_q.o"
+".\output\os_sem.o"
+".\output\os_task.o"
+".\output\os_time.o"
+".\output\myi2c.o"
+".\output\mylcd.o"
+--strict --scatter ".\output\Demo.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\output\Demo.map" -o .\output\Demo.axf

@@ -1,0 +1,27 @@
+Dependencies for Project 'Demo', Target 'Target 1': (DO NOT MODIFY !)
+F (.\Source\Startup.s)(0x559CDAC0)(--cpu ARM7TDMI -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
+F (.\Source\LPC2294.h)(0x41AFDFBA)()
+F (.\Source\config.h)(0x5EC4E564)()
+F (.\Source\myI2C.h)(0x46E7D03A)()
+F (.\Source\myLCD.h)(0x46E7DD7E)()
+F (.\Source\myI2C.c)(0x46F31B36)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\myi2c.o --omf_browse .\objects\myi2c.crf --depend .\objects\myi2c.d)
+I (Source\config.h)(0x5EC4E564)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7D03A)
+I (Source\myLCD.h)(0x46E7DD7E)
+F (.\Source\myLCD.c)(0x5EC4E6F8)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\mylcd.o --omf_browse .\objects\mylcd.crf --depend .\objects\mylcd.d)
+I (Source\config.h)(0x5EC4E564)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7D03A)
+I (Source\myLCD.h)(0x46E7DD7E)
+F (.\Source\main.c)(0x5EC4E6EF)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (Source\config.h)(0x5EC4E564)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7D03A)
+I (Source\myLCD.h)(0x46E7DD7E)

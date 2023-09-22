@@ -1,0 +1,12 @@
+.\objects\canfunc.o: Source\can\CanFunc.c
+.\objects\canfunc.o: Source\can\..\config.h
+.\objects\canfunc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\canfunc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\canfunc.o: Source\can\..\LPC2294.h
+.\objects\canfunc.o: Source\can\..\myI2C.h
+.\objects\canfunc.o: Source\can\..\myLCD.h
+.\objects\canfunc.o: Source\can\..\.\can\IncludeCan.h
+.\objects\canfunc.o: Source\can\..\.\can\Custom.h
+.\objects\canfunc.o: Source\can\..\.\can\CanReg.H
+.\objects\canfunc.o: Source\can\..\.\can\CanFunc.H
+.\objects\canfunc.o: Source\can\..\.\can\CanApp.H

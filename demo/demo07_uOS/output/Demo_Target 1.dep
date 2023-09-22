@@ -1,0 +1,106 @@
+Dependencies for Project 'Demo', Target 'Target 1': (DO NOT MODIFY !)
+F (.\App\bsp.c)(0x5EC76FD5)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\bsp.o --omf_browse .\output\bsp.crf --depend .\output\bsp.d)
+I (C:\Keil_v5\ARM\INC\Philips\lpc2103.h)(0x559CDB08)
+I (.\ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (.\ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\App\main.c)(0x5EC7A9B8)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+I (.\ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (.\ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+I (App\bsp.h)(0x47622F93)
+I (.\source\config.h)(0x5EC783FD)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (.\source\LPC2294.h)(0x41AFDFBA)
+I (.\source\myI2C.h)(0x46E7672C)
+I (.\source\myLCD.h)(0x46E7DD7E)
+F (.\app\startup.s)(0x47626F82)(--cpu ARM7TDMI -g --apcs=interwork --diag_suppress=A1608W-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\output\startup.lst --xref -o .\output\startup.o --depend .\output\startup.d)
+F (.\app\os_cfg.h)(0x5EC7A564)()
+F (.\arm\os_cpu_a.s)(0x5EC77998)(--cpu ARM7TDMI -g --apcs=interwork --diag_suppress=A1608W-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\output\os_cpu_a.lst --xref -o .\output\os_cpu_a.o --depend .\output\os_cpu_a.d)
+F (.\arm\os_cpu_c.c)(0x5EC779A0)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_cpu_c.o --omf_browse .\output\os_cpu_c.crf --depend .\output\os_cpu_c.d)
+I (.\ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (.\ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\arm\os_int_a.s)(0x5EC779A8)(--cpu ARM7TDMI -g --apcs=interwork --diag_suppress=A1608W-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\output\os_int_a.lst --xref -o .\output\os_int_a.o --depend .\output\os_int_a.d)
+F (.\arm\os_cpu.h)(0x5EC7798E)()
+F (.\ucosii\Includes.h)(0x47622AC3)()
+F (.\ucosii\os_core.c)(0x5EC778E9)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_core.o --omf_browse .\output\os_core.crf --depend .\output\os_core.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_flag.c)(0x5EC778F9)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_flag.o --omf_browse .\output\os_flag.crf --depend .\output\os_flag.d)
+I (ucosii\INCLUDES.H)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_mbox.c)(0x5EC77909)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_mbox.o --omf_browse .\output\os_mbox.crf --depend .\output\os_mbox.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_mem.c)(0x5EC77912)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_mem.o --omf_browse .\output\os_mem.crf --depend .\output\os_mem.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_mutex.c)(0x5EC7791A)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_mutex.o --omf_browse .\output\os_mutex.crf --depend .\output\os_mutex.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_q.c)(0x5EC77923)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_q.o --omf_browse .\output\os_q.crf --depend .\output\os_q.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_sem.c)(0x5EC7792F)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_sem.o --omf_browse .\output\os_sem.crf --depend .\output\os_sem.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_task.c)(0x5EC77938)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_task.o --omf_browse .\output\os_task.crf --depend .\output\os_task.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\os_time.c)(0x5EC7793D)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\os_time.o --omf_browse .\output\os_time.crf --depend .\output\os_time.d)
+I (ucosii\includes.h)(0x47622AC3)
+I (.\arm\os_cpu.h)(0x5EC7798E)
+I (.\app\os_cfg.h)(0x5EC7A564)
+I (ucosii\uCOS_II.H)(0x5EC77943)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
+F (.\ucosii\ucos_ii.h)(0x5EC77943)()
+F (.\source\config.h)(0x5EC783FD)()
+F (.\source\LPC2294.h)(0x41AFDFBA)()
+F (.\source\myI2C.c)(0x46F31EDA)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\myi2c.o --omf_browse .\output\myi2c.crf --depend .\output\myi2c.d)
+I (source\config.h)(0x5EC783FD)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (source\LPC2294.h)(0x41AFDFBA)
+I (source\myI2C.h)(0x46E7672C)
+I (source\myLCD.h)(0x46E7DD7E)
+F (.\source\myI2C.h)(0x46E7672C)()
+F (.\source\myLCD.c)(0x5EC78474)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections -I .\app -I .\arm -I .\ucosii -I .\source --diag_suppress=2532-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\output\mylcd.o --omf_browse .\output\mylcd.crf --depend .\output\mylcd.d)
+I (source\config.h)(0x5EC783FD)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (source\LPC2294.h)(0x41AFDFBA)
+I (source\myI2C.h)(0x46E7672C)
+I (source\myLCD.h)(0x46E7DD7E)
+F (.\source\myLCD.h)(0x46E7DD7E)()

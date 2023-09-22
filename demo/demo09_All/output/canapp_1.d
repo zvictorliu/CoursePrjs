@@ -1,0 +1,12 @@
+.\output\canapp_1.o: can\CanApp.c
+.\output\canapp_1.o: .\source\config.h
+.\output\canapp_1.o: D:\programs\ads\INCLUDE\stdio.h
+.\output\canapp_1.o: D:\programs\ads\INCLUDE\stdlib.h
+.\output\canapp_1.o: .\source\LPC2294.h
+.\output\canapp_1.o: .\source\myI2C.h
+.\output\canapp_1.o: .\source\myLCD.h
+.\output\canapp_1.o: .\can\IncludeCan.h
+.\output\canapp_1.o: .\can\Custom.h
+.\output\canapp_1.o: .\can\CanReg.H
+.\output\canapp_1.o: .\can\CanFunc.H
+.\output\canapp_1.o: .\can\CanApp.H

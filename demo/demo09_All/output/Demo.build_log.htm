@@ -1,0 +1,263 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.26.2.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Joan w, SJTU, LIC=IK112-9IH7D-U4JS7-EIHS3-6EJBF-SEHI7
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.26.2.0
+Toolchain Path:  E:\software\Keil\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARM.DLL V5.26.2.0
+Dialog DLL:      DARMP.DLL V1.53.0.0
+Target DLL:      Segger\JLTAgdi.dll V1.61.0.0
+Dialog DLL:      TARMP.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+E:\master\智能仪器课程设计\智能仪器课程设计\Demo\Demo.uvproj
+Project File Date:  09/01/2020
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\software\Keil\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'Target 1'
+assembling startup.s...
+compiling bsp.c...
+compiling main.c...
+App\main.c(322): warning:  #550-D: variable "U"  was set but never used
+  	FP32 q0=K*(1+T),q1=-K,U=0; //计算q0和q1，并给u0赋初值
+App\main.c: 1 warning, 0 errors
+assembling os_cpu_a.s...
+assembling os_int_a.s...
+compiling os_cpu_c.c...
+compiling os_core.c...
+compiling os_flag.c...
+compiling os_mbox.c...
+compiling os_mem.c...
+compiling os_q.c...
+compiling os_mutex.c...
+compiling os_sem.c...
+compiling os_time.c...
+compiling os_task.c...
+compiling myI2C.c...
+compiling CanApp.c...
+can\CanApp.c(48): warning:  #191-D: type qualifier is meaningless on cast type
+  	if(_CANLUTerr.Word != 0 )	//验收滤波器遇到表格错误
+can\CanApp.c(51): warning:  #191-D: type qualifier is meaningless on cast type
+  		j=_CANLUTerrAd.Word;	
+can\CanApp.c(55): warning:  #191-D: type qualifier is meaningless on cast type
+  		k=CANICR(j);
+can\CanApp.c(58): warning:  #188-D: enumerated type mixed with another type
+  			ReadCanRxBuf(j,&CANRcvCyBufApp[j]);
+can\CanApp.c(76): warning:  #191-D: type qualifier is meaningless on cast type
+  			CanBufOffLinePrg(j);//总线关闭处理
+can\CanApp.c(76): warning:  #191-D: type qualifier is meaningless on cast type
+  			CanBufOffLinePrg(j);//总线关闭处理
+can\CanApp.c(76): warning:  #191-D: type qualifier is meaningless on cast type
+  			CanBufOffLinePrg(j);//总线关闭处理
+can\CanApp.c(76): warning:  #191-D: type qualifier is meaningless on cast type
+  			CanBufOffLinePrg(j);//总线关闭处理
+can\CanApp.c(92): warning:  #188-D: enumerated type mixed with another type
+  			ClrCanDataOver(j);	//释放接收缓冲区
+can\CanApp.c(139): warning:  #191-D: type qualifier is meaningless on cast type
+  				TxBUF1(CanNum) = *Buf;
+can\CanApp.c(142): warning:  #191-D: type qualifier is meaningless on cast type
+  				TxBUF2(CanNum) = *Buf;
+can\CanApp.c(145): warning:  #191-D: type qualifier is meaningless on cast type
+  				TxBUF3(CanNum) = *Buf;
+can\CanApp.c(152): warning:  #191-D: type qualifier is meaningless on cast type
+  		CANMOD(CanNum).Bits.TPM =1;	//发送优先级由帧的优先级域决定
+can\CanApp.c(170): warning:  #191-D: type qualifier is meaningless on cast type
+  		RcvCyBuf->RcvBuf[PointTemp].CANRcvFS = RxBUF(CanNum).CANRcvFS;
+can\CanApp.c(171): warning:  #191-D: type qualifier is meaningless on cast type
+  		RcvCyBuf->RcvBuf[PointTemp].RxCANID = RxBUF(CanNum).RxCANID;
+can\CanApp.c(172): warning:  #191-D: type qualifier is meaningless on cast type
+  		RcvCyBuf->RcvBuf[PointTemp].RDA = RxBUF(CanNum).RDA;
+can\CanApp.c(173): warning:  #191-D: type qualifier is meaningless on cast type
+  		RcvCyBuf->RcvBuf[PointTemp].RDB = RxBUF(CanNum).RDB;
+can\CanApp.c(198): warning:  #191-D: type qualifier is meaningless on cast type
+  	if((0== CANSR(CanNum).Bits.TS1)&&(0 != CANSR(CanNum).Bits.TBS1))
+can\CanApp.c(198): warning:  #191-D: type qualifier is meaningless on cast type
+  	if((0== CANSR(CanNum).Bits.TS1)&&(0 != CANSR(CanNum).Bits.TBS1))
+can\CanApp.c(202): warning:  #191-D: type qualifier is meaningless on cast type
+  	else if((0== CANSR(CanNum).Bits.TS2)&&(0 != CANSR(CanNum).Bits.TBS2))
+can\CanApp.c(202): warning:  #191-D: type qualifier is meaningless on cast type
+  	else if((0== CANSR(CanNum).Bits.TS2)&&(0 != CANSR(CanNum).Bits.TBS2))
+can\CanApp.c(206): warning:  #191-D: type qualifier is meaningless on cast type
+  	else if((0== CANSR(CanNum).Bits.TS3)&&(0 != CANSR(CanNum).Bits.TBS3))
+can\CanApp.c(206): warning:  #191-D: type qualifier is meaningless on cast type
+  	else if((0== CANSR(CanNum).Bits.TS3)&&(0 != CANSR(CanNum).Bits.TBS3))
+can\CanApp.c(286): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANIER(CanNum).Word= USE_INT_CAN[CanNum];												
+can\CanApp.c: 24 warnings, 0 errors
+compiling myLCD.c...
+compiling CanFunc.c...
+can\CanFunc.c(77): warning:  #191-D: type qualifier is meaningless on cast type
+  	_CANAFMR.Bits.AccBP =1;
+can\CanFunc.c(103): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.RM =1;
+can\CanFunc.c(104): warning:  #191-D: type qualifier is meaningless on cast type
+  	return(!CANMOD(CanNum).Bits.RM );
+can\CanFunc.c(116): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.RM =0;
+can\CanFunc.c(118): warning:  #191-D: type qualifier is meaningless on cast type
+  	return(CANMOD(CanNum).Bits.RM );
+can\CanFunc.c(131): warning:  #191-D: type qualifier is meaningless on cast type
+  	if (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(133): warning:  #191-D: type qualifier is meaningless on cast type
+  		CANBTR(CanNum).Word = Val;
+can\CanFunc.c(134): warning:  #191-D: type qualifier is meaningless on cast type
+  		if (CANBTR(CanNum).Word != Val)
+can\CanFunc.c(156): warning:  #191-D: type qualifier is meaningless on cast type
+  	if (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(158): warning:  #191-D: type qualifier is meaningless on cast type
+  		CANEWL(CanNum).Bits.EWL = Val;
+can\CanFunc.c(159): warning:  #191-D: type qualifier is meaningless on cast type
+  		if (CANEWL(CanNum).Bits.EWL != Val)
+can\CanFunc.c(180): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.TPM = Val;
+can\CanFunc.c(181): warning:  #191-D: type qualifier is meaningless on cast type
+  	if (CANMOD(CanNum).Bits.TPM == Val)
+can\CanFunc.c(197): warning:  #191-D: type qualifier is meaningless on cast type
+  	if (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(199): warning:  #191-D: type qualifier is meaningless on cast type
+  		CANMOD(CanNum).Bits.LOM = Val;
+can\CanFunc.c(200): warning:  #191-D: type qualifier is meaningless on cast type
+  		if (CANMOD(CanNum).Bits.LOM != Val)
+can\CanFunc.c(233): warning:  #191-D: type qualifier is meaningless on cast type
+  			if (CANMOD(CanNum).Bits.STM != 0)
+can\CanFunc.c(235): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (!CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(236): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 1;
+can\CanFunc.c(238): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (CANMOD(CanNum).Bits.STM)
+can\CanFunc.c(239): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.STM = 0;
+can\CanFunc.c(241): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(242): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 0;
+can\CanFunc.c(249): warning:  #191-D: type qualifier is meaningless on cast type
+  			if (CANMOD(CanNum).Bits.STM != 1)
+can\CanFunc.c(251): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (!CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(252): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 1;
+can\CanFunc.c(254): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (!CANMOD(CanNum).Bits.STM)
+can\CanFunc.c(255): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.STM = 1;
+can\CanFunc.c(257): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(258): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 0;
+can\CanFunc.c(268): warning:  #191-D: type qualifier is meaningless on cast type
+  			if (CANMOD(CanNum).Bits.STM != 0)
+can\CanFunc.c(270): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (!CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(271): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 1;
+can\CanFunc.c(273): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (CANMOD(CanNum).Bits.STM)
+can\CanFunc.c(274): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.STM = 0;
+can\CanFunc.c(276): warning:  #191-D: type qualifier is meaningless on cast type
+  				while (CANMOD(CanNum).Bits.RM)
+can\CanFunc.c(277): warning:  #191-D: type qualifier is meaningless on cast type
+  					CANMOD(CanNum).Bits.RM = 0;
+can\CanFunc.c(282): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANCMR(CanNum) = Temp;
+can\CanFunc.c(296): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANCMR(CanNum) = Temp;
+can\CanFunc.c(310): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANCMR(CanNum) = Temp;
+can\CanFunc.c(324): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.SM = 1;	
+can\CanFunc.c(325): warning:  #191-D: type qualifier is meaningless on cast type
+  	return(!CANMOD(CanNum).Bits.SM);
+can\CanFunc.c(339): warning:  #191-D: type qualifier is meaningless on cast type
+  	i=CANMOD(CanNum);
+can\CanFunc.c(340): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.RM=1; 
+can\CanFunc.c(341): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.SM = 0;	
+can\CanFunc.c(342): warning:  #191-D: type qualifier is meaningless on cast type
+  	CANMOD(CanNum).Bits.RM=i.Bits.RM; 
+can\CanFunc.c(343): warning:  #191-D: type qualifier is meaningless on cast type
+  	return(CANMOD(CanNum).Bits.SM);
+can\CanFunc.c(437): warning:  #68-D: integer conversion resulted in a change of sign
+  		*(pU32 + i) = -1;		// disable all AF cell
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(465): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(509): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(550): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_SFF_CELL mask = {-1,-1,-1,-1,-1,-1,-1,-1};
+can\CanFunc.c(591): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_EFF_CELL mask = {-1,-1};
+can\CanFunc.c(591): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_EFF_CELL mask = {-1,-1};
+can\CanFunc.c(633): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_EFF_CELL mask = {-1,-1};
+can\CanFunc.c(633): warning:  #68-D: integer conversion resulted in a change of sign
+  	stcAF_EFF_CELL mask = {-1,-1};
+can\CanFunc.c(668): warning:  #68-D: integer conversion resulted in a change of sign
+  	INT32U state = -1;
+can\CanFunc.c: 77 warnings, 0 errors
+linking...
+Program Size: Code=14124 RO-data=384 RW-data=88 ZI-data=12360  
+FromELF: creating hex file...
+".\output\Demo.axf" - 0 Error(s), 102 Warning(s).
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

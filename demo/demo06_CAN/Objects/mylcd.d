@@ -1,0 +1,12 @@
+.\objects\mylcd.o: Source\myLCD.c
+.\objects\mylcd.o: Source\config.h
+.\objects\mylcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\mylcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\mylcd.o: Source\LPC2294.h
+.\objects\mylcd.o: Source\myI2C.h
+.\objects\mylcd.o: Source\myLCD.h
+.\objects\mylcd.o: Source\.\can\IncludeCan.h
+.\objects\mylcd.o: Source\.\can\Custom.h
+.\objects\mylcd.o: Source\.\can\CanReg.H
+.\objects\mylcd.o: Source\.\can\CanFunc.H
+.\objects\mylcd.o: Source\.\can\CanApp.H

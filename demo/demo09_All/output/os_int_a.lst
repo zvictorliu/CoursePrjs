@@ -1,0 +1,201 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000                 PRESERVE8
+    3 00000000         
+    4 00000000         
+    5 00000000                 AREA             UCOS_ARM_ASM_INT, CODE, READONL
+Y
+    6 00000000         
+    7 00000000         
+    8 00000000         ;*******************************************************
+                       **************************************************
+    9 00000000         ;                                            IRQ HANDLER
+                       
+   10 00000000         ;
+   11 00000000         ;        This handles all the IRQs
+   12 00000000         ;        Note: FIQ Handler should be written similar to 
+                       this
+   13 00000000         ;
+   14 00000000         ;*******************************************************
+                       **************************************************
+   15 00000000         
+   16 00000000                 IMPORT           OSIntEnter
+   17 00000000                 IMPORT           OSIntExit
+   18 00000000         
+   19 00000000                 IMPORT           OSIntCtxSwFlag
+   20 00000000                 IMPORT           _IntCtxSw
+   21 00000000         
+   22 00000000         
+   23 00000000                 MACRO
+   24 00000000         $IRQ_AsmEntery
+                               HANDLER          $IRQ_CEntry
+   25 00000000                 EXPORT           $IRQ_AsmEntery ; 输出的标号
+   26 00000000                 IMPORT           $IRQ_CEntry ; 引用的外部标号
+   27 00000000         
+   28 00000000         $IRQ_AsmEntery
+   29 00000000                 stmfd            sp!,{r0-r3,r12,lr}
+   30 00000000         
+   31 00000000                 bl               OSIntEnter
+   32 00000000                 bl               $IRQ_CEntry
+   33 00000000                 bl               OSIntExit
+   34 00000000         
+   35 00000000                 ldr              r0,=OSIntCtxSwFlag
+   36 00000000                 ldr              r1,[r0]
+   37 00000000                 cmp              r1,#1
+   38 00000000                 beq              _IntCtxSw
+   39 00000000         
+   40 00000000                 ldmfd            sp!,{r0-r3,r12,lr}
+   41 00000000                 subs             pc,lr,#4
+   42 00000000         
+   43 00000000                 MEND
+   44 00000000         
+   45 00000000         ;所有的中断按如下的格式在注册(引用上面的宏定义)
+   46 00000000         ;$IRQ_AsmEntery HANDLER $IRQ_CEntry
+   47 00000000         
+   48 00000000         
+   49 00000000         
+   50 00000000         
+   51 00000000         ;定时器0中断
+   52 00000000         IRQASMTimer0
+                               HANDLER          IRQCTimer0
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   25 00000000                 EXPORT           IRQASMTimer0 ; 输出的标号
+   26 00000000                 IMPORT           IRQCTimer0  ; 引用的外部标号
+   27 00000000         
+   28 00000000         IRQASMTimer0
+   29 00000000 E92D500F        stmfd            sp!,{r0-r3,r12,lr}
+   30 00000004         
+   31 00000004 EBFFFFFE        bl               OSIntEnter
+   32 00000008 EBFFFFFE        bl               IRQCTimer0
+   33 0000000C EBFFFFFE        bl               OSIntExit
+   34 00000010         
+   35 00000010 E59F0010        ldr              r0,=OSIntCtxSwFlag
+   36 00000014 E5901000        ldr              r1,[r0]
+   37 00000018 E3510001        cmp              r1,#1
+   38 0000001C 0AFFFFFE        beq              _IntCtxSw
+   39 00000020         
+   40 00000020 E8BD500F        ldmfd            sp!,{r0-r3,r12,lr}
+   41 00000024 E25EF004        subs             pc,lr,#4
+   42 00000028         
+   53 00000028         
+   54 00000028         ;定时器1中断
+   55 00000028         ;IRQASMTimer1 HANDLER IRQCTimer1
+   56 00000028         
+   57 00000028         ;串口0中断
+   58 00000028         ;IRQASMUart0  HANDLER IRQCUart0
+   59 00000028         
+   60 00000028         ;串口0中断
+   61 00000028         ;IRQASMUart1  HANDLER IRQCUart1
+   62 00000028         
+   63 00000028         
+   64 00000028         ;外部中断0中断
+   65 00000028         ;IRQASMEx0     HANDLER IRQCEx0
+   66 00000028         
+   67 00000028         ;外部中断1中断
+   68 00000028         ;IRQASMEx1    HANDLER IRQCEx1
+   69 00000028         
+   70 00000028         ;外部中断20中断
+   71 00000028         ;IRQASMEx2    HANDLER IRQCEx2
+   72 00000028         
+   73 00000028         ;SPI中断
+   74 00000028         ;IRQASMSpi    HANDLER IRQCSpi
+   75 00000028         
+   76 00000028         ;I2C中断        
+   77 00000028         ;IRQASMI2c    HANDLER IRQCI2c
+   78 00000028         
+   79 00000028                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931,A1608W --apcs=interwork --dep
+end=.\output\os_int_a.d -o.\output\os_int_a.o -IE:\software\Keil\Keil_v5\ARM\RV
+31\INC -IE:\software\Keil\Keil_v5\ARM\CMSIS\Include -IE:\software\Keil\Keil_v5\
+ARM\INC\Philips --predefine="__UVISION_VERSION SETA 526" --list=.\output\os_int
+_a.lst arm\os_int_a.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+IRQASMTimer0 00000000
+
+Symbol: IRQASMTimer0
+   Definitions
+      At line 28 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+   Uses
+      At line 25 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: IRQASMTimer0 used once
+UCOS_ARM_ASM_INT 00000000
+
+Symbol: UCOS_ARM_ASM_INT
+   Definitions
+      At line 5 in file arm\os_int_a.s
+   Uses
+      None
+Comment: UCOS_ARM_ASM_INT unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+IRQCTimer0 00000000
+
+Symbol: IRQCTimer0
+   Definitions
+      At line 26 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+   Uses
+      At line 32 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: IRQCTimer0 used once
+OSIntCtxSwFlag 00000000
+
+Symbol: OSIntCtxSwFlag
+   Definitions
+      At line 19 in file arm\os_int_a.s
+   Uses
+      At line 35 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: OSIntCtxSwFlag used once
+OSIntEnter 00000000
+
+Symbol: OSIntEnter
+   Definitions
+      At line 16 in file arm\os_int_a.s
+   Uses
+      At line 31 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: OSIntEnter used once
+OSIntExit 00000000
+
+Symbol: OSIntExit
+   Definitions
+      At line 17 in file arm\os_int_a.s
+   Uses
+      At line 33 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: OSIntExit used once
+_IntCtxSw 00000000
+
+Symbol: _IntCtxSw
+   Definitions
+      At line 20 in file arm\os_int_a.s
+   Uses
+      At line 38 in macro HANDLER
+      at line 52 in file arm\os_int_a.s
+Comment: _IntCtxSw used once
+5 symbols
+340 symbols in table

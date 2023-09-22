@@ -1,0 +1,71 @@
+Dependencies for Project 'Demo', Target 'Target 1': (DO NOT MODIFY !)
+F (.\Source\Startup.s)(0x559CDAC0)(--cpu ARM7TDMI -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
+F (.\Source\LPC2294.h)(0x41AFDFBA)()
+F (.\Source\config.h)(0x5EC52700)()
+F (.\Source\myI2C.h)(0x46E7672C)()
+F (.\Source\myLCD.h)(0x46E77192)()
+F (.\Source\myI2C.c)(0x46F31D8A)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections --diag_suppress=68,191,188-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\myi2c.o --omf_browse .\objects\myi2c.crf --depend .\objects\myi2c.d)
+I (Source\config.h)(0x5EC52700)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7672C)
+I (Source\myLCD.h)(0x46E77192)
+I (Source\.\can\IncludeCan.h)(0x46474624)
+I (Source\.\can\Custom.h)(0x46EDD1F6)
+I (Source\.\can\CanReg.H)(0x46F31E7A)
+I (Source\.\can\CanFunc.H)(0x4128C402)
+I (Source\.\can\CanApp.H)(0x5EC52717)
+F (.\Source\myLCD.c)(0x5EC52716)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections --diag_suppress=68,191,188-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\mylcd.o --omf_browse .\objects\mylcd.crf --depend .\objects\mylcd.d)
+I (Source\config.h)(0x5EC52700)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7672C)
+I (Source\myLCD.h)(0x46E77192)
+I (Source\.\can\IncludeCan.h)(0x46474624)
+I (Source\.\can\Custom.h)(0x46EDD1F6)
+I (Source\.\can\CanReg.H)(0x46F31E7A)
+I (Source\.\can\CanFunc.H)(0x4128C402)
+I (Source\.\can\CanApp.H)(0x5EC52717)
+F (.\Source\main.c)(0x5EC528E4)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections --diag_suppress=68,191,188-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (Source\config.h)(0x5EC52700)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\LPC2294.h)(0x41AFDFBA)
+I (Source\myI2C.h)(0x46E7672C)
+I (Source\myLCD.h)(0x46E77192)
+I (Source\.\can\IncludeCan.h)(0x46474624)
+I (Source\.\can\Custom.h)(0x46EDD1F6)
+I (Source\.\can\CanReg.H)(0x46F31E7A)
+I (Source\.\can\CanFunc.H)(0x4128C402)
+I (Source\.\can\CanApp.H)(0x5EC52717)
+F (.\Source\can\CanApp.c)(0x5EC5282B)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections --diag_suppress=68,191,188-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\canapp.o --omf_browse .\objects\canapp.crf --depend .\objects\canapp.d)
+I (Source\can\..\config.h)(0x5EC52700)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\can\..\LPC2294.h)(0x41AFDFBA)
+I (Source\can\..\myI2C.h)(0x46E7672C)
+I (Source\can\..\myLCD.h)(0x46E77192)
+I (Source\can\..\.\can\IncludeCan.h)(0x46474624)
+I (Source\can\..\.\can\Custom.h)(0x46EDD1F6)
+I (Source\can\..\.\can\CanReg.H)(0x46F31E7A)
+I (Source\can\..\.\can\CanFunc.H)(0x4128C402)
+I (Source\can\..\.\can\CanApp.H)(0x5EC52717)
+F (.\Source\can\CanApp.h)(0x5EC52717)()
+F (.\Source\can\CanFunc.c)(0x5EC5279B)(--c99 --gnu -c --cpu ARM7TDMI -g -O0 --apcs=interwork --split_sections --diag_suppress=68,191,188-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\canfunc.o --omf_browse .\objects\canfunc.crf --depend .\objects\canfunc.d)
+I (Source\can\..\config.h)(0x5EC52700)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599EDB3C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
+I (Source\can\..\LPC2294.h)(0x41AFDFBA)
+I (Source\can\..\myI2C.h)(0x46E7672C)
+I (Source\can\..\myLCD.h)(0x46E77192)
+I (Source\can\..\.\can\IncludeCan.h)(0x46474624)
+I (Source\can\..\.\can\Custom.h)(0x46EDD1F6)
+I (Source\can\..\.\can\CanReg.H)(0x46F31E7A)
+I (Source\can\..\.\can\CanFunc.H)(0x4128C402)
+I (Source\can\..\.\can\CanApp.H)(0x5EC52717)
+F (.\Source\can\CanFunc.h)(0x4128C402)()
+F (.\Source\can\CanReg.h)(0x46F31E7A)()
+F (.\Source\can\Custom.h)(0x46EDD1F6)()
+F (.\Source\can\IncludeCan.H)(0x46474624)()
