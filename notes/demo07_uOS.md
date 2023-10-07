@@ -119,3 +119,4 @@ https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe5090
 
 就是通过四个线程并行，能够实时在屏幕打印按键信息
 
+<img src="https://cdn.jsdelivr.net/gh/zvictorliu/typoraPics@main/img/image-20231007153703943.png" alt="image-20231007153703943" style="zoom:50%;" />
