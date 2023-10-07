@@ -8,6 +8,10 @@
 - 每时每刻总是让优先级最高的就绪任务处于运行状态
 - 在调用系统API 函数、中断结束、定时中断结束时总是执行调度算法，μC/OS-II通过事先计算好数据简化了运算量，通过精心设计就绪表结构使得延时可预知
 
+操作系统源码可以不看，只看如何使用：
+
+------
+
 一个任务可以理解为一个线程，和创建线程类似，只是需要给出堆栈空间
 
 https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L161-L165
@@ -31,9 +35,25 @@ https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe5090
 - 捕获按键信息
 - 屏幕控制
 
-任务之间用信号量传递（更像是消息）
+任务之间有信号和消息机制（和os里的信号量不太一样）
 
 https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L26-L29
+
+`Mbox`是可以传递信息的“邮件”消息，而`Sem`只是一个信号
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L60
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L38
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L92
+
+这里的`key`就是传递的信息
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L47
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L64
+
+https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L124
 
 ### 硬件看门狗
 
@@ -99,16 +119,3 @@ https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe5090
 
 就是通过四个线程并行，能够实时在屏幕打印按键信息
 
-这个`Sem`和`Mbox`消息，`Mbox`是可以传递信息的，而`Sem`只是信号
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L60
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L38
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L92
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L47
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L64
-
-https://github.com/zvictorliu/CoursePrjs/blob/b91e31335718753fc39c05b0c83dbe509030b096/demo/demo07_uOS/app/main.c#L124
