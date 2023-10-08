@@ -6,7 +6,7 @@ https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f
 
 https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f0a470c/demo/demo02_LCD/Source/config.h#L24-L25
 
-就利用好`myLCD`提供好的函数接口就行了，不用多想
+就利用好`myLCD`提供好的函数接口就行了
 
 先切换模式再配置显示的东西
 
@@ -26,17 +26,17 @@ https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f
 
 ### LCD_Init:
 
-这里的配置真是看不懂什么意思
+配置仍然是选择端口，配置输入输出
 
 https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f0a470c/demo/demo02_LCD/Source/myLCD.c#L11-L13
 
-剩余部分，先关CLK RST的LCD，再打开RST和CS的
+剩余部分是一个同步串行通信，进行复位和片选
 
 https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f0a470c/demo/demo02_LCD/Source/myLCD.c#L14-L19
 
 ### I2C_Init
 
-甚至只有配置
+同样是配置输出
 
 https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f0a470c/demo/demo02_LCD/Source/myI2C.c#L37-L38
 
@@ -46,9 +46,17 @@ https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f
 
 分层设计：SetMode -> SendData -> SendByte
 
-到最低层就是寄存器的操作了，不必了解这么多
+到最低层就是寄存器的操作了，采用同步串行通信
 
 https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f0a470c/demo/demo02_LCD/Source/myLCD.c#L32-L33
+
+依次取byte的最高位，为1则输出高，为0则输出低，同时有时钟同步信号
+
+https://github.com/zvictorliu/CoursePrjs/blob/3b9c5f26a814c7b7af79c3bbcc471ef4d29ee73d/demo/demo02_LCD/Source/myLCD.c#L35-L38
+
+<img src="https://cdn.jsdelivr.net/gh/zvictorliu/typoraPics@main/img/image-20231008104522197.png" alt="image-20231008104522197" style="zoom:67%;" />
+
+这里应该是向LCD串行发送控制命令
 
 ### LCD_DrawOUT：
 
@@ -73,3 +81,5 @@ https://github.com/zvictorliu/CoursePrjs/blob/c56f974c1d6d1d86017f2047bb4e0fa72f
 `*p++`和`*(p++)`效果没有区别，先取`*p`修改后，再`p++`，所以这里应该是逐个字符的意思
 
 反正不管咋做到的吧，是能支持中文的
+
+同样也是通过`LCD_SDA`串行同步发送
