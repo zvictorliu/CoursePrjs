@@ -3,91 +3,93 @@
 #include "bsp.h"
 
 #include "config.h"
-//#include "target.h"
+// #include "target.h"
 
-/*¶Ë¿Ú¶¨Òå*/
-#define	    KEY_OK		    (1 << 4 ) //OK¼ü£¬¿ØÖÆµç»úÆôÖ¹
-#define	    KEY_ESC		    (1 << 5 ) //ESC¼ü£¬¿ØÖÆµç»úÔË×ª·½Ïò
-#define	    KEY_CENT	    (1 << 6 ) //CENT¼ü£¬¿ØÖÆCENTµÆ
-#define     KEY_AUTO	    (1 << 7 ) //AUTO¼ü£¬µç»ú×Ô¶¯¾ÀÆ«
-#define	    KEY_MANU	    (1 << 10) //MANU¼ü£¬µç»úÊÖ¶¯¾ÀÆ«
-#define	    KEY_DEC		    (1 << 11) //DEC¼ü£¬¼õĞ¡µç»úÔËĞĞËÙ¶È
-#define	    KEY_INC	        (1 << 12) //INC¼ü£¬Ôö´óµç»úÔËĞĞËÙ¶È
+/*ç«¯å£å®šä¹‰*/
+#define KEY_OK (1 << 4)    // OKé”®ï¼Œæ§åˆ¶ç”µæœºå¯æ­¢
+#define KEY_ESC (1 << 5)   // ESCé”®ï¼Œæ§åˆ¶ç”µæœºè¿è½¬æ–¹å‘
+#define KEY_CENT (1 << 6)  // CENTé”®ï¼Œæ§åˆ¶CENTç¯
+#define KEY_AUTO (1 << 7)  // AUTOé”®ï¼Œç”µæœºè‡ªåŠ¨çº å
+#define KEY_MANU (1 << 10) // MANUé”®ï¼Œç”µæœºæ‰‹åŠ¨çº å
+#define KEY_DEC (1 << 11)  // DECé”®ï¼Œå‡å°ç”µæœºè¿è¡Œé€Ÿåº¦
+#define KEY_INC (1 << 12)  // INCé”®ï¼Œå¢å¤§ç”µæœºè¿è¡Œé€Ÿåº¦
 
-#define     LED_MANU		(1 << 14) //MANUµÆ
-#define     LED_CENT		(1 << 15) //CENTµÆ
-#define     LED_AUTO		(1 << 16) //AUTOµÆ
-#define     LED_ALARM   (1 << 13)//ALARMµÆ
-#define     ADC_PULSE 		(1 << 8 ) // µç»ú¿ØÖÆµÄ¶Ë¿Ú
-#define     ADC_EN    		(1 << 17)
-#define     ADC_MODE 		(1 << 18)
-#define     ADC_DIR   		(1 << 19)
+#define LED_MANU (1 << 14)  // MANUç¯
+#define LED_CENT (1 << 15)  // CENTç¯
+#define LED_AUTO (1 << 16)  // AUTOç¯
+#define LED_ALARM (1 << 13) // ALARMç¯
+#define ADC_PULSE (1 << 8)  // ç”µæœºæ§åˆ¶çš„ç«¯å£
+#define ADC_EN (1 << 17)
+#define ADC_MODE (1 << 18)
+#define ADC_DIR (1 << 19)
 
-#define		TASK_STK_SIZE		128
+#define TASK_STK_SIZE 128
 
-OS_STK		TaskStartStk[TASK_STK_SIZE];
+OS_STK TaskStartStk[TASK_STK_SIZE];
 
 void TaskStart(void *data);
 
-/*·ÖÅäÈÎÎñµÄ¶ÑÕ»¿Õ¼ä*/
-OS_STK	StacK_I2C[128]; //¿´ÃÅ¹·¿ØÖÆÈÎÎñ
-OS_STK  StacK_CAN[128]; //CAN×ÜÏßÈÎÎñ
-OS_STK	StacK_KEY[128]; //²¶»ñ°´¼üĞÅÏ¢ÈÎÎñ
-OS_STK	StacK_MID[128]; //¼üÅÌ´¦ÀíÈÎÎñ
-OS_STK	StacK_PWM[128]; //PIDËã·¨Çı¶¯²½½øµç»ú
-OS_STK	StacK_LCD[128]; //ÆÁÄ»ÏÔÊ¾ÈÎÎñ
+/*åˆ†é…ä»»åŠ¡çš„å †æ ˆç©ºé—´*/
+OS_STK StacK_I2C[128]; // çœ‹é—¨ç‹—æ§åˆ¶ä»»åŠ¡
+OS_STK StacK_CAN[128]; // CANæ€»çº¿ä»»åŠ¡
+OS_STK StacK_KEY[128]; // æ•è·æŒ‰é”®ä¿¡æ¯ä»»åŠ¡
+OS_STK StacK_MID[128]; // é”®ç›˜å¤„ç†ä»»åŠ¡
+OS_STK StacK_PWM[128]; // PIDç®—æ³•é©±åŠ¨æ­¥è¿›ç”µæœº
+OS_STK StacK_LCD[128]; // å±å¹•æ˜¾ç¤ºä»»åŠ¡
 
 void PWM_Out(uint16 spd, uint8 dir);
 
-/*¶¨ÒåÈÎÎñÖ®¼äÍ¨Ñ¶ĞÅºÅ*/
+/*å®šä¹‰ä»»åŠ¡ä¹‹é—´é€šè®¯ä¿¡å·*/
 OS_EVENT *SEM_UPDATE;
 OS_EVENT *MBOX_KEYDN;
 OS_EVENT *SEM_CAN;
 OS_EVENT *SEM_AUTO;
 
+/*å®šä¹‰å¸¸æ•°*/
+// K=Kp;Kt=Kp*Ts/Ti;Kd=Kp*Td/Ts;
+#define K 0.45       // æ¯”ä¾‹æ”¾å¤§ç³»æ•°,åˆå§‹å€¼0.3125
+#define T 1.9556     // Ts/Ti
+#define TDs 1.564    // Td/Ts
+#define Setpoint 125 // ç”µæœºä¸­ç‚¹ä½ç½®
 
-/*¶¨Òå³£Êı*/
-//K=Kp;Kt=Kp*Ts/Ti;Kd=Kp*Td/Ts; 
-#define  	K              0.45//±ÈÀı·Å´óÏµÊı,³õÊ¼Öµ0.3125
-#define  	T              1.9556  //Ts/Ti
-#define  	TDs            1.564   //Td/Ts
-#define  	Setpoint       125 //µç»úÖĞµãÎ»ÖÃ
+#define EXT_01 (1 << 21)
+#define EXT_02 (1 << 20)
 
-#define		EXT_01		(1 << 21)
-#define		EXT_02		(1 << 20)
+#define GetRelPos(dat) (((dat) & (1 << 12)) ? (-(((dat) >> 00) & 0xFFF)) : (((dat) >> 00) & 0xFFF))
 
-#define		GetRelPos(dat)	(((dat) & (1 << 12)) ? (-(((dat) >> 00) & 0xFFF)) : (((dat) >> 00) & 0xFFF))
+/*å®šä¹‰å…¨å±€å˜é‡*/
+uint8 control = 1;      // è‡ªåŠ¨çº åæ§åˆ¶å˜é‡
+uint8 run = 1, dir = 0; // ç”µæœºè¿è¡Œæ§åˆ¶å˜é‡
+uint8 cent = 0;
+uint8 u8CntKEY = 0; // é”®ç›˜ä¿¡æ¯æ•è·ä»»åŠ¡æ§åˆ¶å˜é‡
+uint8 u8CntI2C = 0; // çœ‹é—¨ç‹—ä»»åŠ¡æ§åˆ¶å˜é‡
+// uint8 canout = 0; //CANæ€»çº¿æ•°æ®æš‚å­˜å˜é‡
+int16 canout = 0;
+uint16 U1 = 0;
+int16 temspd = 0; // å®šä¹‰å…¨å±€å˜é‡æ§åˆ¶åˆå§‹è¿è¡Œï¼›
 
-/*¶¨ÒåÈ«¾Ö±äÁ¿*/
-uint8 control = 1; //×Ô¶¯¾ÀÆ«¿ØÖÆ±äÁ¿
-uint8 run = 1,dir = 0; //µç»úÔËĞĞ¿ØÖÆ±äÁ¿
-uint8 cent=0;
-uint8 u8CntKEY = 0; //¼üÅÌĞÅÏ¢²¶»ñÈÎÎñ¿ØÖÆ±äÁ¿
-uint8 u8CntI2C = 0; //¿´ÃÅ¹·ÈÎÎñ¿ØÖÆ±äÁ¿
-//uint8 canout = 0; //CAN×ÜÏßÊı¾İÔİ´æ±äÁ¿
-int16 canout= 0;
-uint16 U1=0;
-int16 temspd = 0; //¶¨ÒåÈ«¾Ö±äÁ¿¿ØÖÆ³õÊ¼ÔËĞĞ£»
+uint8 edge = 0;
+FP32 U = 0; // è®¡ç®—q0å’Œq1å’Œq2ï¼Œå¹¶ç»™u0èµ‹åˆå€¼
 
-char  strtmp[8]; //ÓÃÓÚLCDÊä³öÎÄ×ÖÊ±ÓÃµÄ×Ö·ûĞÍÊı×é±äÁ¿
-char  strKey[8]; //ÓÃÓÚ´¢´æ¼üÅÌĞÅÏ¢Ê±ÓÃµÄ×Ö·ûĞÍÊı×é±äÁ¿
 
+char strtmp[8] = "MANU"; // ç”¨äºLCDè¾“å‡ºæ–‡å­—æ—¶ç”¨çš„å­—ç¬¦å‹æ•°ç»„å˜é‡ï¼Œåˆå§‹æ˜¯MANUæ¨¡å¼
+char strKey[8]; // ç”¨äºå‚¨å­˜é”®ç›˜ä¿¡æ¯æ—¶ç”¨çš„å­—ç¬¦å‹æ•°ç»„å˜é‡
 
 void TargetResetInit(void)
 {
-#ifdef __DEBUG_RAM    
-    MEMMAP = 0x2;                   //remap
+#ifdef __DEBUG_RAM
+    MEMMAP = 0x2; // remap
 #endif
 
-#ifdef __DEBUG_FLASH    
-    MEMMAP = 0x1;                   //remap
+#ifdef __DEBUG_FLASH
+    MEMMAP = 0x1; // remap
 #endif
 
-#ifdef __IN_CHIP    
-    MEMMAP = 0x1;                   //remap
+#ifdef __IN_CHIP
+    MEMMAP = 0x1; // remap
 #endif
 
-    /* ÉèÖÃÏµÍ³¸÷²¿·ÖÊ±ÖÓ */
+    /* è®¾ç½®ç³»ç»Ÿå„éƒ¨åˆ†æ—¶é’Ÿ */
     PLLCON = 1;
 #if (Fpclk / (Fcclk / 4)) == 1
     VPBDIV = 0;
@@ -113,12 +115,13 @@ void TargetResetInit(void)
 #endif
     PLLFEED = 0xaa;
     PLLFEED = 0x55;
-    while((PLLSTAT & (1 << 10)) == 0);
+    while ((PLLSTAT & (1 << 10)) == 0)
+        ;
     PLLCON = 3;
     PLLFEED = 0xaa;
     PLLFEED = 0x55;
-    
-    /* ÉèÖÃ´æ´¢Æ÷¼ÓËÙÄ£¿é */
+
+    /* è®¾ç½®å­˜å‚¨å™¨åŠ é€Ÿæ¨¡å— */
     MAMCR = 0;
 #if Fcclk < 20000000
     MAMTIM = 1;
@@ -130,456 +133,468 @@ void TargetResetInit(void)
 #endif
 #endif
     MAMCR = 2;
-    
-    /* ³õÊ¼»¯VIC */
+
+    /* åˆå§‹åŒ–VIC */
     VICIntEnClr = 0xffffffff;
     VICVectAddr = 0;
     VICIntSelect = 0;
 
-    /* Ìí¼Ó×Ô¼ºµÄ´úÂë */
-
+    /* æ·»åŠ è‡ªå·±çš„ä»£ç  */
 }
 
-
-
 /***********************************************************
-                      ¿´ÃÅ¹·¿ØÖÆÈÎÎñ
-                      
-describe£º³ÌĞòÔËĞĞ£¬Ã¿¸ôÒ»¶ÎÊ±¼ä¸ø¿´ÃÅ¹·ĞÅºÅ£¬Çå¿ÕËüµÄ¼ÆÊıÆ÷
-          ·ñÔò¼ÆÊıÆ÷Òç³ö£¬»á¸ø´¦ÀíÆ÷Ò»¸ö¸´Î»ĞÅºÅ¡£
+                      çœ‹é—¨ç‹—æ§åˆ¶ä»»åŠ¡
+
+describeï¼šç¨‹åºè¿è¡Œï¼Œæ¯éš”ä¸€æ®µæ—¶é—´ç»™çœ‹é—¨ç‹—ä¿¡å·ï¼Œæ¸…ç©ºå®ƒçš„è®¡æ•°å™¨
+          å¦åˆ™è®¡æ•°å™¨æº¢å‡ºï¼Œä¼šç»™å¤„ç†å™¨ä¸€ä¸ªå¤ä½ä¿¡å·ã€‚
 ************************************************************/
 void TasK_I2C(void *pdata)
 {
-	uint8 i= 0;
-	pdata= pdata;
-	
-	SEM_UPDATE= OSSemCreate(1); // ´´½¨ĞÅºÅÁ¿
-	
-	while(1)
-	{
-		I2C_FeedDog(); // Ó²¼ş¿´ÃÅ¹·
-		if(++i>= 10) {
-			i= 0;
-			u8CntI2C++;
-			OSSemPost(SEM_UPDATE); // ·¢ËÍĞÅºÅÁ¿
-		}
-		OSTimeDlyHMSM(0, 0, 0, 5); // ×ÔÉíÑÓÊ±µÈ´ı
-	}
+    uint8 i = 0;
+    pdata = pdata;
+
+    SEM_UPDATE = OSSemCreate(1); // åˆ›å»ºä¿¡å·é‡
+
+    while (1)
+    {
+        I2C_FeedDog(); // ç¡¬ä»¶çœ‹é—¨ç‹—
+        if (++i >= 10)
+        {
+            i = 0;
+            u8CntI2C++;
+            OSSemPost(SEM_UPDATE); // å‘é€ä¿¡å·é‡
+        }
+        OSTimeDlyHMSM(0, 0, 0, 5); // è‡ªèº«å»¶æ—¶ç­‰å¾…
+    }
 }
 
-
-
 /**********************************************************
-                        CAN×ÜÏßÈÎÎñ
-                        
-describe£º¶Á³öÊä³öÖµ£¬×÷ÎªPIDËã·¨µÄÊäÈë£¬½ÓÊÜ´¦ÀíÊı¾İ
+                        CANæ€»çº¿ä»»åŠ¡
+
+describeï¼šè¯»å‡ºè¾“å‡ºå€¼ï¼Œä½œä¸ºPIDç®—æ³•çš„è¾“å…¥ï¼Œæ¥å—å¤„ç†æ•°æ®
 ***********************************************************/
-void TasK_CAN(void* pdata)
+void TasK_CAN(void *pdata)
 {
-	uint8 err= 0;
-	pdata=pdata;
-	err= err;
-	
-	SEM_CAN= OSSemCreate(1); // ´´½¨ĞÅºÅÁ¿
-	
-   	InitCAN(CAN1);// CAN³õÊ¼»¯
-	ConfigAFReg();// ÅäÖÃ½ÓÊÕ¿ØÖÆ
+    uint8 err = 0;
+    char str[8];
+    pdata = pdata;
+    err = err;
 
-	while(1)
-	{
-		/* ²ÉÓÃÖĞ¶Ï·½Ê½½ÓÊÕÊı¾İ, Èç¹ûÊÕµ½Êı¾İ, ¿ÉÒÔÔÚ´Ë´¦½øĞĞ¼ì²â */
-		while(!((CANRcvCyBufApp[CAN1].ReadPoint!= CANRcvCyBufApp[CAN1].WritePoint) || CANRcvCyBufApp[CAN1].FullFlag)) 
-			OSTimeDlyHMSM(0, 0, 0, 5);
-		canout= GetRelPos(CANRcvCyBufApp[CAN1].RcvBuf[CANRcvCyBufApp[CAN1].ReadPoint].RDA.Word);
-		//can×ÜÏß´«À´µÄÊı¾İÊÇ64Î»µÄ£¬¶ÔÆäÖĞµÍ32Î»Êı¾İÓÒÒÆ10Î»ºóÈ¡³ö×îºóµÄ11Î»Êı¾İ¸³¸øÈ«¾Ö±äÁ¿canout
-		
-		OSSemPost(SEM_CAN); // ·¢ËÍĞÅºÅÁ¿
-		//·¢ËÍÒ»¸öĞÅºÅÁ¿¡£Èç¹ûÓĞÈÎÎñµÈ´ı£¬µ÷ÓÃOS_EventTaskRdy()½«ÈÎÎñÖÃÎª¾ÍĞ÷£¬µ÷¶È¡£
-		
-		if(++CANRcvCyBufApp[CAN1].ReadPoint>= USE_CAN_cycRCV_BUF_SIZE)
-			CANRcvCyBufApp[CAN1].ReadPoint= 0;
-		CANRcvCyBufApp[CAN1].FullFlag= 0;
-	}
+    SEM_CAN = OSSemCreate(1); // åˆ›å»ºä¿¡å·é‡
+
+    InitCAN(CAN1); // CANåˆå§‹åŒ–
+    ConfigAFReg(); // é…ç½®æ¥æ”¶æ§åˆ¶
+
+    while (1)
+    {
+        /* é‡‡ç”¨ä¸­æ–­æ–¹å¼æ¥æ”¶æ•°æ®, å¦‚æœæ”¶åˆ°æ•°æ®, å¯ä»¥åœ¨æ­¤å¤„è¿›è¡Œæ£€æµ‹ */
+        while (!((CANRcvCyBufApp[CAN1].ReadPoint != CANRcvCyBufApp[CAN1].WritePoint) || CANRcvCyBufApp[CAN1].FullFlag))
+            OSTimeDlyHMSM(0, 0, 0, 5);
+        canout = GetRelPos(CANRcvCyBufApp[CAN1].RcvBuf[CANRcvCyBufApp[CAN1].ReadPoint].RDA.Word);
+        // canæ€»çº¿ä¼ æ¥çš„æ•°æ®æ˜¯64ä½çš„ï¼Œå¯¹å…¶ä¸­ä½32ä½æ•°æ®å³ç§»10ä½åå–å‡ºæœ€åçš„11ä½æ•°æ®èµ‹ç»™å…¨å±€å˜é‡canout
+
+        OSSemPost(SEM_CAN); // å‘é€ä¿¡å·é‡
+        // å‘é€ä¸€ä¸ªä¿¡å·é‡ã€‚å¦‚æœæœ‰ä»»åŠ¡ç­‰å¾…ï¼Œè°ƒç”¨OS_EventTaskRdy()å°†ä»»åŠ¡ç½®ä¸ºå°±ç»ªï¼Œè°ƒåº¦ã€‚
+
+        if (++CANRcvCyBufApp[CAN1].ReadPoint >= USE_CAN_cycRCV_BUF_SIZE)
+            CANRcvCyBufApp[CAN1].ReadPoint = 0;
+        CANRcvCyBufApp[CAN1].FullFlag = 0;
+    }
 }
 
-
-
 /**********************************************************
-                       ¼üÅÌ´¦ÀíÈÎÎñ
-***********************************************************/
-void TasK_MID(void *pdata)
-{
-	uint8  err;
-	bool flag = 1;
-	int step = 0;
-	uint32 *Key= 0;
-	pdata= pdata;
-	MBOX_KEYDN= OSMboxCreate(&Key);
-	
-	while(1)
-	{
-		Key= OSMboxPend(MBOX_KEYDN, 0, &err); // µÈ´ıÀ´×ÔTask_KEYµÄÓÊÏäÏûÏ¢
-				switch(*Key) 
-		{
-			case KEY_CENT:
-			
-			IO0CLR=LED_CENT;
-	
-			//¶ÔÖĞ³ÌĞò
-
-		while(flag)
-   {
-   while((~IO1PIN) & EXT_01)//Ã»µ½×î×ó
-   {
-     PWM_Out(60, 1);//ÒÆ¶¯µ½×î×ó
-   }
-   while((~IO1PIN) & EXT_02)//Ã»µ½×îÓÒ
-   {
-     PWM_Out(60, 0);step++;//ÒÆ¶¯µ½×îÓÒ¿ªÊ¼¼ÆÊı
-   }
-   step = step/2;
-	 step += 33000;
-   while(step!=0)
-   {
-     PWM_Out(60, 1);//¿ØÖÆËÙ¶ÈÓë·½Ïò
-     step--; 
-     flag = 0;    
-   }
-	 PWM_Out(0, 0);
-  }
-	 flag = 1;
-	 IO0SET=LED_CENT;//°´¼ü¿ØÖÆ
-					break;
-				
-					
-					
-			case KEY_AUTO: 
-					control=1-control;
-					if(control)
-					{
-						IO0SET=LED_AUTO;
-						strcpy(strtmp, "    ");
-						
-						break;
-					}
-					else
-					{
-						IO0CLR=LED_AUTO;
-						strcpy(strtmp, "AUTO");
-						IO0SET=LED_MANU;
-						break;
-					}
-					
-			case KEY_MANU:
-			{   IO0SET=LED_AUTO;
-				  control=1;
-				IO0CLR=LED_MANU;
-					strcpy(strtmp, "MANU");}
-					OSSemPost(SEM_UPDATE);
-		}	
-		
-
-    		
-		OSTimeDlyHMSM(0, 0, 0, 300);
-	}
-}
-
-
-
-/**********************************************************
-                        °´¼ü´¦ÀíÈÎÎñ
+                        æŒ‰é”®å¤„ç†ä»»åŠ¡
 ***********************************************************/
 void TasK_KEY(void *pdata)
 {
-	uint8  i= 0;
-	uint32 Key= 0;
-	pdata= pdata;
+    uint8 i = 0;
+    uint32 Key = 0;
+    pdata = pdata;
 
-	MBOX_KEYDN= OSMboxCreate(&Key);// ´´½¨ÓÊÏäĞÅÏ¢£¬×¼±¸ËÍ¸øTask_MID
-	
-	I2C_Init(); //I2C³õÊ¼»¯
-	
-	/*°´¼üºÍµÆµÄ¶Ë¿Ú¶¨Òå*/	
-	PINSEL0&=~((3<<12) | (3<<14) | (3<<20) | (3<<28) | ((uint32)3<<30));
-	PINSEL1&=~(3<<0);
-	IO0DIR |= LED_AUTO | LED_MANU | LED_CENT|LED_ALARM;//set LED AS out
-	IO0DIR &= ~(KEY_AUTO | KEY_MANU | KEY_CENT);//set KEY AS in
-  
-	while(1)
-	{
-	
-		while((Key= (~IO0PIN) & (KEY_AUTO | KEY_CENT | KEY_MANU))== 0)
-					OSTimeDlyHMSM(0, 0, 0, 50);
-					
-		OSMboxPost(MBOX_KEYDN, (void *)&Key); // ·¢ËÍÓÊÏäÏûÏ¢¸øTask_MID
+    MBOX_KEYDN = OSMboxCreate(&Key); // åˆ›å»ºé‚®ç®±ä¿¡æ¯ï¼Œå‡†å¤‡é€ç»™Task_MID
 
-		if(++i>= 10)
-		{
-			i= 0;
-			u8CntKEY++;
-		}
-		
-		OSTimeDlyHMSM(0, 0, 0, 15);
-		I2C_FeedDog();//Î¹¹·
-	}
+    I2C_Init(); // I2Cåˆå§‹åŒ–
+
+    /*æŒ‰é”®å’Œç¯çš„ç«¯å£å®šä¹‰*/
+    PINSEL0 &= ~((3 << 12) | (3 << 14) | (3 << 20) | (3 << 28) | ((uint32)3 << 30));
+    PINSEL1 &= ~(3 << 0);
+    IO0DIR |= LED_AUTO | LED_MANU | LED_CENT | LED_ALARM; // set LED AS out
+    IO0DIR &= ~(KEY_AUTO | KEY_MANU | KEY_CENT);          // set KEY AS in
+
+    while (1)
+    {
+
+        while ((Key = (~IO0PIN) & (KEY_AUTO | KEY_CENT | KEY_MANU)) == 0)
+            OSTimeDlyHMSM(0, 0, 0, 50);
+
+        OSMboxPost(MBOX_KEYDN, (void *)&Key); // å‘é€é‚®ç®±æ¶ˆæ¯ç»™Task_MID
+
+        if (++i >= 10)
+        {
+            i = 0;
+            u8CntKEY++;
+        }
+
+        OSTimeDlyHMSM(0, 0, 0, 15);
+        I2C_FeedDog(); // å–‚ç‹—
+    }
 }
 
-
-
 /**********************************************************
-                       µç»úÇı¶¯ÈÎÎñ
+                       é”®ç›˜å¤„ç†ä»»åŠ¡(ä¸åŒ…æ‹¬å·¦ä¾§)
 ***********************************************************/
-/*µç»úÇı¶¯º¯Êı*/
-void PWM_Out(uint16 spd, uint8 dir) 
+void TasK_MID(void *pdata)
 {
-	temspd=0;//ÉèÖÃ³õÊ¼ËÙ¶È£¬ÈÃµç»ú³õÊ¼×´Ì¬ÎªÍ££»
-	//¼ì²â±ß½çÇé¿ö
-	if(dir== 1 && ((~IO1PIN) & EXT_01)== 0) {spd = 0;	 IO0CLR =LED_ALARM;}
-  else if(dir== 0 && ((~IO1PIN) & EXT_02)== 0) {spd = 0;  IO0CLR =LED_ALARM;}
-	else 
-		IO0SET=LED_ALARM;
+    uint8 err;
+    bool flag = 1;
+    int step = 0;
+    uint32 *Key = 0;
+    pdata = pdata;
+    MBOX_KEYDN = OSMboxCreate(&Key);
 
-	if(spd == 0)
-	{
-		PWMTCR= 2;
-		return;
-	}
-	else 
-		IO0SET=LED_ALARM;
-	
-	if(dir)
-		IO0SET= (1 << 19);
-	else
-		IO0CLR= (1 << 19);
-	
-	PWMMR0= Fpclk/ (spd*10);//ÉèÖÃ¶¨Ê±Æ÷µÄÊ±¼ä,Í¨¹ıÆ¥ÅäÊ±ÖØĞÂÉèÖÃ¼ÆÊıÖµÀ´¿ØÖÆPWMÖÜÆÚÂÊ
-	PWMMR4= PWMMR0/ 2;// 50%Õ¼¿Õ±È
-	PWMLER= (1 << 0) | (1 << 4);// PWM0ºÍPWM4Æ¥ÅäËø´æ
-	PWMTCR= 9;// Æô¶¯PWMÊä³ö
+    while (1)
+    {
+        Key = OSMboxPend(MBOX_KEYDN, 0, &err); // ç­‰å¾…æ¥è‡ªTask_KEYçš„é‚®ç®±æ¶ˆæ¯
+        switch (*Key)
+        {
+            case KEY_CENT:
+
+                IO0CLR = LED_CENT; //å¼€ç¯
+
+                // å¯¹ä¸­ç¨‹åº
+
+                while (flag)
+                {
+                    while ((~IO1PIN) & EXT_01) // æ²¡åˆ°æœ€å·¦
+                    {
+                        PWM_Out(60, 1); // ç§»åŠ¨åˆ°æœ€å·¦
+                    }
+                    while ((~IO1PIN) & EXT_02) // æ²¡åˆ°æœ€å³
+                    {
+                        PWM_Out(60, 0);
+                        step++; // ç§»åŠ¨åˆ°æœ€å³å¼€å§‹è®¡æ•°
+                    }
+                    step = step / 2;
+                    step += 33000; //ä¿®æ­£
+                    while (step != 0)
+                    {
+                        PWM_Out(60, 1); // æ§åˆ¶é€Ÿåº¦ä¸æ–¹å‘
+                        step--;
+                        flag = 0;
+                    }
+                    PWM_Out(0, 0);
+                }
+                flag = 1;
+                IO0SET = LED_CENT; // å…³ç¯
+                break;
+
+            case KEY_AUTO:
+                control = 1 - control;
+                if (control)
+                {
+                    IO0SET = LED_AUTO;
+                    strcpy(strtmp, "    ");
+
+                    break;
+                }
+                else
+                {
+                    IO0CLR = LED_AUTO;
+                    strcpy(strtmp, "AUTO");
+                    IO0SET = LED_MANU;
+                    break;
+                }
+
+            case KEY_MANU:
+                {
+                    IO0SET = LED_AUTO;
+                    control = 1;
+                    IO0CLR = LED_MANU;
+                    strcpy(strtmp, "MANU");
+                }
+            
+                OSSemPost(SEM_UPDATE); //? ä¹Ÿå±äºCASE KEY_MANU
+        }
+
+        OSTimeDlyHMSM(0, 0, 0, 300);
+    }
 }
-
-
-void TasK_PWM(void* pdata)
-{
-	//PIDËã·¨
-	uint8 err = 0;
-	uint8 dir=0;
-	int e[3]= {0};
-	int outn = 0;
-	
-//	FP32 q0=K*(1+T),q1=-K,U=0; //¼ÆËãq0ºÍq1£¬²¢¸øu0¸³³õÖµ
-	FP32 q0=K*(1+T+TDs);
-	FP32 q1=-K*(1+2*TDs);
-	FP32 q2=K*TDs;
-	FP32 U=0; //¼ÆËãq0ºÍq1ºÍq2£¬²¢¸øu0¸³³õÖµ
-	
-	pdata=pdata; 
-	  while(1)
-	 {
-		OSSemPend(SEM_CAN,0, &err);//¹¦ÄÜ£ºÉêÇëÒ»¸öĞÅºÅÁ¿¡£
-		//ÈÎÎñÔÚÎŞ·¨»ñµÃĞÅºÅÁ¿Ê±»áµ÷ÓÃOS_EventTaskWait()¹ÒÆğ£¬ÔÙµ÷ÓÃOSSched()½øĞĞÈÎÎñÇĞ»»¡£
-		//ÔÚ³¬Ê±·µ»ØÊ±,µ÷ÓÃOS_EventTo£¨£©½«ÈÎÎñÖÃÎª¾ÍĞ÷.
-		
-		temspd=50;
-		
-		/* ÒÔÏÂÊÇµç»ú¿ØÖÆ¶Ë¿ÚºÍPWM¶Ë¿ÚÉèÖÃ */
-		PINSEL0&=~ (3 << 16); // ½«PWM¶Ë¿ÚÉèÖÃÎªÆÕÍ¨µÄIO¿Ú
-		PINSEL0|=  (2 << 16); // Ñ¡ÖĞPWM4
-		PINSEL1&=~((3 <<  2) | (3 <<  4) | (3 <<  6));// ÉèÖÃÎªµç»ú¿ØÖÆ¿Ú17£¬18£¬19
-		PINSEL2 &= ~0x08;
-		IO0DIR |=(ADC_EN | ADC_MODE | ADC_DIR);//Êä³ö
-		IO0CLR  =  (1 << 17);//P0.17ÖÃ0
-		PWMMCR  = 2;//reset PWMMCR0
-		PWMPCR  = 1 << 12;// enable PM4
-		
-		e[0]= canout;//¼ÆËãKÊ±¿ÌµÄÎó²î²ÉÑùÖµ
-		
-    if(e[0] > 30)dir=1;
-		    else if(e[0] <- 30)dir=0;
-		         else temspd=0;
-		
-		if(temspd==0) {
-			PWM_Out(0, 0);
-			continue;
-		}
-		  else
-      {
-				U=q0*e[0]+q1*e[1]+q2*e[2];
-				U1=U;
-				if(U>0)
-				outn = 0.4*U;
-				else
-				outn = -0.4*U;
-				
-				temspd=outn;
-				if(temspd > 99)
-					temspd = 99;
-		  }	
-        e[2]=e[1];
-        e[1]=e[0]; //Êı¾İ´«µİ				
-		
-		/*´«µİµç»úÔËĞĞËÙ¶ÈÓë·½Ïò¸øµç»úÇı¶¯º¯Êı*/
-   if (control==0)
-	{
-		if(1)
-			{
-			if(!((dir== 1 && ((~IO1PIN) & EXT_01)== 0) || 
-			     (dir== 0 && ((~IO1PIN) & EXT_02)== 0))) {
-				PWM_Out(temspd, dir);
-			}
-			else
-				PWM_Out(0, 0);
-		  }
-		  //else
-			//PWM_Out(0, 0);
-   		
-    	/*PIDËã·¨¼ÆËãÔöÁ¿*/
-	   		
-			
-	}
-	}
-	
-}
-
 
 /**********************************************************
-                      ÆÁÄ»¿ØÖÆÈÎÎñ
+                       ç”µæœºé©±åŠ¨ä»»åŠ¡
+***********************************************************/
+/*ç”µæœºé©±åŠ¨å‡½æ•°*/
+void PWM_Out(uint16 spd, uint8 dir)
+{
+    // temspd = 0; //* è¿™å¥ä¸åˆç†
+    // æ£€æµ‹è¾¹ç•Œæƒ…å†µ
+    if (dir == 1 && ((~IO1PIN) & EXT_01) == 0)
+    {
+        spd = 0;
+        edge = 1;
+        IO0CLR = LED_ALARM;
+    }
+    else if (dir == 0 && ((~IO1PIN) & EXT_02) == 0)
+    {
+        spd = 0;
+        edge = 1;
+        IO0CLR = LED_ALARM;
+    }
+    else{
+        edge = 0;
+        IO0SET = LED_ALARM;
+    }
+        
+
+    if (spd == 0)
+    {
+        PWMTCR = 2;
+        return;
+    }
+    else
+        IO0SET = LED_ALARM;
+
+    if (dir)
+        IO0SET = (1 << 19);
+    else
+        IO0CLR = (1 << 19);
+
+    PWMMR0 = Fpclk / (spd * 10);  // è®¾ç½®å®šæ—¶å™¨çš„æ—¶é—´,é€šè¿‡åŒ¹é…æ—¶é‡æ–°è®¾ç½®è®¡æ•°å€¼æ¥æ§åˆ¶PWMå‘¨æœŸç‡
+    PWMMR4 = PWMMR0 / 2;          // 50%å ç©ºæ¯”
+    PWMLER = (1 << 0) | (1 << 4); // PWM0å’ŒPWM4åŒ¹é…é”å­˜
+    PWMTCR = 9;                   // å¯åŠ¨PWMè¾“å‡º
+}
+
+void TasK_PWM(void *pdata)
+{
+    // PIDç®—æ³•
+    uint8 err = 0;
+    uint8 dir = 0;
+    int e[3] = {0};
+    int outn = 0;
+
+    char str[8];
+
+    //	FP32 q0=K*(1+T),q1=-K,U=0; //è®¡ç®—q0å’Œq1ï¼Œå¹¶ç»™u0èµ‹åˆå€¼
+    FP32 q0 = K * (1 + T + TDs);
+    FP32 q1 = -K * (1 + 2 * TDs);
+    FP32 q2 = K * TDs;
+    
+
+    pdata = pdata;
+    while (1)
+    {
+        OSSemPend(SEM_CAN, 0, &err); // åŠŸèƒ½ï¼šç”³è¯·ä¸€ä¸ªä¿¡å·é‡ã€‚
+        // ä»»åŠ¡åœ¨æ— æ³•è·å¾—ä¿¡å·é‡æ—¶ä¼šè°ƒç”¨OS_EventTaskWait()æŒ‚èµ·ï¼Œå†è°ƒç”¨OSSched()è¿›è¡Œä»»åŠ¡åˆ‡æ¢ã€‚
+        // åœ¨è¶…æ—¶è¿”å›æ—¶,è°ƒç”¨OS_EventToï¼ˆï¼‰å°†ä»»åŠ¡ç½®ä¸ºå°±ç»ª.
+
+        temspd = 50;
+
+        /* ä»¥ä¸‹æ˜¯ç”µæœºæ§åˆ¶ç«¯å£å’ŒPWMç«¯å£è®¾ç½® */
+        PINSEL0 &= ~(3 << 16);                        // å°†PWMç«¯å£è®¾ç½®ä¸ºæ™®é€šçš„IOå£
+        PINSEL0 |= (2 << 16);                         // é€‰ä¸­PWM4
+        PINSEL1 &= ~((3 << 2) | (3 << 4) | (3 << 6)); // è®¾ç½®ä¸ºç”µæœºæ§åˆ¶å£17ï¼Œ18ï¼Œ19
+        PINSEL2 &= ~0x08;
+        IO0DIR |= (ADC_EN | ADC_MODE | ADC_DIR); // è¾“å‡º
+        IO0CLR = (1 << 17);                      // P0.17ç½®0
+        PWMMCR = 2;                              // reset PWMMCR0
+        PWMPCR = 1 << 12;                        // enable PM4
+
+        e[0] = canout; // è®¡ç®—Kæ—¶åˆ»çš„è¯¯å·®é‡‡æ ·å€¼
+        // * æœ‰å¯èƒ½è¯»å†™äº’æ–¥ï¼Œä½†å¦‚æœæ˜¯å•æ ¸å°±ä¸ä¼š
+
+        //* è®¾ç½®æ­»åŒº
+        if (e[0] > 30)
+            dir = 1;
+        else if (e[0] < -30)
+            dir = 0;
+        else
+            temspd = 0;
+
+        // if (temspd == 0)
+        // {
+        //     // PWM_Out(0, 0);
+        //     if (control == 0) PWM_Out(0, 0);
+        //     continue;
+        // }
+        // else
+        if (temspd != 0)
+        {
+            U = q0 * e[0] + q1 * e[1] + q2 * e[2];  
+            U1 = U;
+            if (U > 0)
+                outn = 0.7 * U;
+            else
+                outn = -0.7 * U;
+
+            temspd = outn;
+            if (temspd > 99)
+                temspd = 99;
+        }
+
+        e[2] = e[1];
+        e[1] = e[0]; // æ•°æ®ä¼ é€’
+
+        /*ä¼ é€’ç”µæœºè¿è¡Œé€Ÿåº¦ä¸æ–¹å‘ç»™ç”µæœºé©±åŠ¨å‡½æ•°*/
+        if (control == 0)
+        {
+            if (!((dir == 1 && ((~IO1PIN) & EXT_01) == 0) ||
+                      (dir == 0 && ((~IO1PIN) & EXT_02) == 0)))
+            {
+                PWM_Out(temspd, dir);
+            }
+            else
+                PWM_Out(0, 0);
+        }
+    }
+}
+
+/**********************************************************
+                      å±å¹•æ§åˆ¶ä»»åŠ¡
 ***********************************************************/
 void TasK_LCD(void *pdata)
 {
-	uint8 err;
-	char str[8];
-	uint8 spd= 50, dir= 1, run= 0;
+    uint8 err;
+    char str[8];
+    uint8 spd = 50, dir = 1, run = 0;
+    uint16 PWM_Num = 0;
+    // uint16 spd = temspd; // temspdä¸€ç›´åœ¨æ›´æ–°ï¼Œä¸ç®¡æœ‰æ²¡æœ‰ç”¨
 
-	pdata= pdata;
-	
-	/* µç»ú¿ØÖÆ¶Ë¿ÚºÍPWM¶Ë¿ÚÉèÖÃ */
-	PINSEL0&=~ (3 << 16);
-	PINSEL0|=  (2 << 16);
-	PINSEL1&=~((3 <<  2) | (3 <<  4) | (3 <<  6));
-	IO0DIR |= ((1 << 17) | (1 << 18) | (1 << 19));
-	IO0CLR  =  (1 << 17);
-	PWMMCR  = 2;
-	PWMPCR  = 1 << 12;
-			
-	LCD_Init(); // LCD³õÊ¼»¯
-	LCD_SetMode(LCD_MODE_CLEAR); // ÇåÆÁ
-	
-	while(1)
-	{
-		OSSemPend(SEM_UPDATE, 0, &err); // µÈ´ı¿´ÃÅ¹·ĞÅºÅÁ¿
-		//¹¦ÄÜ£ºÉêÇëÒ»¸öĞÅºÅÁ¿¡£
-		//ÈÎÎñÔÚÎŞ·¨»ñµÃĞÅºÅÁ¿Ê±»áµ÷ÓÃOS_EventTaskWait()¹ÒÆğ£¬ÔÙµ÷ÓÃOSSched()½øĞĞÈÎÎñÇĞ»»¡£
-		//ÔÚ³¬Ê±·µ»ØÊ±,µ÷ÓÃOS_EventTo£¨£©½«ÈÎÎñÖÃÎª¾ÍĞ÷.
-		
-		if(control == 1)	
-		{
-			LCD_SetMode(LCD_MODE_TEXT);  // Ğ´×Ö·û
-			LCD_TextOut(0, 0, strtmp);
+    pdata = pdata;
 
-			/*LCDÏÔÊ¾×Ö·û*/
-			LCD_TextOut(2, 0, "Control:");
-			LCD_TextOut(0, 1, "+/- SPD:");
-			LCD_TextOut(0, 2, "ESC DIR:");
-			LCD_TextOut(0, 3, "OK  RUN:");
+    /* ç”µæœºæ§åˆ¶ç«¯å£å’ŒPWMç«¯å£è®¾ç½® */
+    PINSEL0 &= ~(3 << 16);
+    PINSEL0 |= (2 << 16);
+    PINSEL1 &= ~((3 << 2) | (3 << 4) | (3 << 6));
+    IO0DIR |= ((1 << 17) | (1 << 18) | (1 << 19));
+    IO0CLR = (1 << 17);
+    PWMMCR = 2;
+    PWMPCR = 1 << 12;
 
-			/*ÊµÏÖINC¡¢DEC¡¢ESC¡¢OK¼üµÄ¹¦ÄÜ*/
-			if((~IO0PIN) & KEY_INC)
-				if(++spd> 99)
-					spd= 99;
-			if((~IO0PIN) & KEY_DEC)
-				if(--spd< 1)
-					spd= 1;
-			if((~IO0PIN) & KEY_ESC)
-				dir= 1- dir;
-			if((~IO0PIN) & KEY_OK )
-				run= 1- run;
-			
-			sprintf(str, " %02d", spd);
-			LCD_TextOut(4, 1, str); //ÏÔÊ¾ËÙ¶È
-			
-			/*¸ù¾İµç»ú·½ÏòºÍÔËĞĞÓë·ñÈ«¾Ö±äÁ¿ÔÚLCDÆÁÉÏÏÔÊ¾ÏàÓ¦×Ö·û*/
-			if(dir)
-				LCD_TextOut(4, 2, "RIGHT");
-			else
-				LCD_TextOut(4, 2, "LEFT ");
-			if(run)
-				LCD_TextOut(4, 3, "GOING");
-			else
-				LCD_TextOut(4, 3, "STOP ");
-			
-			/*´«µİµç»úÔËĞĞËÙ¶ÈÓë·½Ïò¸øµç»úÇı¶¯º¯Êı*/
-			if(run)
-				PWM_Out(spd, dir);
-			else
-				PWM_Out(0, 0);
-			Sleep(30);
-			I2C_FeedDog(); // Ó²¼ş¿´ÃÅ¹·
-		}
-		
-		/*???AUTO??????????AUTO??*/
-		if(control == 0) 
-		{
-			LCD_SetMode(LCD_MODE_CLEAR);
-			Delay(1000);
-			LCD_SetMode(LCD_MODE_TEXT);
-			LCD_TextOut(0, 0, strtmp);
+    LCD_Init();                  // LCDåˆå§‹åŒ–
+    LCD_SetMode(LCD_MODE_CLEAR); // æ¸…å±
 
-			sprintf(str, "%d", temspd);
-			LCD_TextOut(1, 1, "SPD:");
-			LCD_TextOut(4, 1, str);
-			
-			LCD_TextOut(1, 2, "DIR:");
-			if(dir)
-				LCD_TextOut(4, 2, "RIGHT");
-			else
-				LCD_TextOut(4, 2, "LEFT ");
-			
-			LCD_TextOut(1, 3, "ERR:");
-			sprintf(str, "%d", canout);
-			LCD_TextOut(4, 3, str);
-		}
-		OSTimeDlyHMSM(0, 0, 0, 20);
-	}
+    while (1)
+    {
+        OSSemPend(SEM_UPDATE, 0, &err); // ç­‰å¾…çœ‹é—¨ç‹—ä¿¡å·é‡
+        // åŠŸèƒ½ï¼šç”³è¯·ä¸€ä¸ªä¿¡å·é‡ã€‚
+        // ä»»åŠ¡åœ¨æ— æ³•è·å¾—ä¿¡å·é‡æ—¶ä¼šè°ƒç”¨OS_EventTaskWait()æŒ‚èµ·ï¼Œå†è°ƒç”¨OSSched()è¿›è¡Œä»»åŠ¡åˆ‡æ¢ã€‚
+        // åœ¨è¶…æ—¶è¿”å›æ—¶,è°ƒç”¨OS_EventToï¼ˆï¼‰å°†ä»»åŠ¡ç½®ä¸ºå°±ç»ª.
+
+        if (control == 1)
+        {
+            LCD_SetMode(LCD_MODE_TEXT); // å†™å­—ç¬¦
+            LCD_TextOut(0, 0, strtmp);
+
+            /*LCDæ˜¾ç¤ºå­—ç¬¦*/
+            // LCD_TextOut(2, 0, "Control:");
+            LCD_TextOut(0, 1, "+/- SPD:");
+            LCD_TextOut(0, 2, "ESC DIR:");
+            LCD_TextOut(0, 3, "OK  RUN:");
+            if (edge) //* æ‰‹åŠ¨æ¨¡å¼åˆ°è¾¹ç•Œå°±æŠ¥é”™
+                LCD_TextOut(2, 0, "error!");
+            else
+                LCD_TextOut(2, 0, "      ");
+
+            /*å®ç°INCã€DECã€ESCã€OKé”®çš„åŠŸèƒ½*/
+            if ((~IO0PIN) & KEY_INC)
+                if (++spd > 99)
+                    spd = 99;
+            if ((~IO0PIN) & KEY_DEC)
+                if (--spd < 1)
+                    spd = 1;
+            if ((~IO0PIN) & KEY_ESC)
+                dir = 1 - dir;
+            if ((~IO0PIN) & KEY_OK)
+                run = 1 - run;
+
+            sprintf(str, " %02d", spd);
+            LCD_TextOut(4, 1, str); // æ˜¾ç¤ºé€Ÿåº¦
+
+            // //todo æ˜¾ç¤ºè„‰å†²æ•°
+            // PWM_Num = abs(U);
+            // sprintf(str, "%d", PWM_Num);
+            // LCD_TextOut(3, 0, str);
+
+            /*æ ¹æ®ç”µæœºæ–¹å‘å’Œè¿è¡Œä¸å¦å…¨å±€å˜é‡åœ¨LCDå±ä¸Šæ˜¾ç¤ºç›¸åº”å­—ç¬¦*/
+            if (dir)
+                LCD_TextOut(4, 2, "RIGHT");
+            else
+                LCD_TextOut(4, 2, "LEFT ");
+            if (run)
+                LCD_TextOut(4, 3, "GOING");
+            else
+                LCD_TextOut(4, 3, "STOP ");
+
+            /*ä¼ é€’ç”µæœºè¿è¡Œé€Ÿåº¦ä¸æ–¹å‘ç»™ç”µæœºé©±åŠ¨å‡½æ•°*/
+            if (run)
+                PWM_Out(spd, dir);
+            else
+                PWM_Out(0, 0);
+            Sleep(30);
+            I2C_FeedDog(); // ç¡¬ä»¶çœ‹é—¨ç‹—
+        }
+
+        /*???AUTO??????????AUTO??*/
+        if (control == 0)
+        {
+            LCD_SetMode(LCD_MODE_CLEAR);
+            Delay(1000);
+            LCD_SetMode(LCD_MODE_TEXT);
+            LCD_TextOut(0, 0, strtmp);
+
+            sprintf(str, "%d", temspd);
+            LCD_TextOut(1, 1, "SPD:");
+            LCD_TextOut(4, 1, str);
+
+            LCD_TextOut(1, 2, "DIR:");
+            if (dir)
+                LCD_TextOut(4, 2, "RIGHT");
+            else
+                LCD_TextOut(4, 2, "LEFT ");
+
+            LCD_TextOut(1, 3, "ERR:");
+            sprintf(str, "%d", canout);
+            LCD_TextOut(4, 3, str);
+        }
+        OSTimeDlyHMSM(0, 0, 0, 20);
+    }
 }
-
 
 void TaskStart(void *pdata)
 {
-	pdata = pdata;
-	TargetResetInit(); //±ØĞëÔÚ°å¼¶³õÊ¼»¯Ö®Ç°
-	BSP_init(); //°å¼¶Ö§³Ö°ü
+    pdata = pdata;
+    TargetResetInit(); // å¿…é¡»åœ¨æ¿çº§åˆå§‹åŒ–ä¹‹å‰
+    BSP_init();        // æ¿çº§æ”¯æŒåŒ…
 
-	LCD_Init(); // LCD³õÊ¼»¯
-	I2C_Init(); // I2C³õÊ¼»¯
+    LCD_Init(); // LCDåˆå§‹åŒ–
+    I2C_Init(); // I2Cåˆå§‹åŒ–
 
+    PINSEL0 &= ~((3 << 8) | (3 << 10) | (3 << 22) | (3 << 24));
+    PINSEL1 &= ~(3 << 0);
+    IO0DIR |= LED_AUTO;
+    IO0DIR &= ~(KEY_ESC | KEY_INC | KEY_DEC | KEY_OK);
 
-	PINSEL0&= ~((3 << 8) | (3 << 10) | (3 << 22) | (3 << 24));
-	PINSEL1&= ~ (3 << 0);
-	IO0DIR |=   LED_AUTO;
-	IO0DIR &= ~(KEY_ESC | KEY_INC | KEY_DEC | KEY_OK);
+    OSTaskCreate(TasK_I2C, (void *)0, &StacK_I2C[TASK_STK_SIZE - 1], 5);
+    OSTaskCreate(TasK_MID, (void *)0, &StacK_MID[TASK_STK_SIZE - 1], 10);
+    OSTaskCreate(TasK_KEY, (void *)0, &StacK_KEY[TASK_STK_SIZE - 1], 15);
+    OSTaskCreate(TasK_LCD, (void *)0, &StacK_LCD[TASK_STK_SIZE - 1], 20);
+    OSTaskCreate(TasK_CAN, (void *)0, &StacK_CAN[TASK_STK_SIZE - 1], 25);
+    OSTaskCreate(TasK_PWM, (void *)0, &StacK_PWM[TASK_STK_SIZE - 1], 30);
 
-	OSTaskCreate(TasK_I2C, (void *)0, &StacK_I2C[TASK_STK_SIZE - 1],  5);
-	OSTaskCreate(TasK_MID, (void *)0, &StacK_MID[TASK_STK_SIZE - 1], 10);
-	OSTaskCreate(TasK_KEY, (void *)0, &StacK_KEY[TASK_STK_SIZE - 1], 15);
-	OSTaskCreate(TasK_LCD, (void *)0, &StacK_LCD[TASK_STK_SIZE - 1], 20);
-	OSTaskCreate(TasK_CAN, (void *)0, &StacK_CAN[TASK_STK_SIZE - 1], 25);
-	OSTaskCreate(TasK_PWM, (void *)0, &StacK_PWM[TASK_STK_SIZE - 1], 30);
-
-	OSTaskDel(0);
+    OSTaskDel(0);
 }
 
-
 /*******************************************************************
-                             mainº¯Êı
+                             mainå‡½æ•°
 ********************************************************************/
 
 int main(void)
-{	
-	OSInit(); // ²Ù×÷ÏµÍ³³õÊ¼»¯
+{
+    OSInit(); // æ“ä½œç³»ç»Ÿåˆå§‹åŒ–
 
-	OSTaskCreate(TaskStart, (void *)0, &TaskStartStk[TASK_STK_SIZE - 1], 0);
-	OSStart();    // ¿ªÊ¼ÏµÍ³ÈÎÎñµ÷¶È
-	
-	return 0;
+    OSTaskCreate(TaskStart, (void *)0, &TaskStartStk[TASK_STK_SIZE - 1], 0);
+    OSStart(); // å¼€å§‹ç³»ç»Ÿä»»åŠ¡è°ƒåº¦
+
+    return 0;
 }
