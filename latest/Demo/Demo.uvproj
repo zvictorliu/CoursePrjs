@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -45,14 +46,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>id01</OutputName>
+          <OutputDirectory>.\output\</OutputDirectory>
+          <OutputName>Demo</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\Listings\</ListingPath>
+          <ListingPath>.\output\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -103,7 +104,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
-          <ComprImg>1</ComprImg>
+          <ComprImg>0</ComprImg>
         </CommonProperty>
         <DllOption>
           <SimDllName>SARM.DLL</SimDllName>
@@ -133,7 +134,7 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreSysVw>0</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>1</UseTarget>
@@ -144,8 +145,8 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>1</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreSysVw>0</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>18</TargetSelection>
@@ -168,14 +169,14 @@
         <Utilities>
           <Flash1>
             <UseTargetDll>1</UseTargetDll>
-            <UseExternalTool>1</UseExternalTool>
+            <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4096</DriverSelection>
+            <DriverSelection>4098</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2ARM.DLL</Flash2>
+          <Flash2>Segger\JLTAgdi.dll</Flash2>
           <Flash3>"LPC210x_ISP.EXE" ("#H" ^X $D COM1: 9600 1)</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -365,20 +366,20 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>1</uGnu>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
-            <vShortEn>1</vShortEn>
-            <vShortWch>1</vShortWch>
+            <v6Lang>0</v6Lang>
+            <v6LangP>0</v6LangP>
+            <vShortEn>0</vShortEn>
+            <vShortWch>0</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=2532</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.\app;.\arm;.\ucosii;.\source;.\can</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,7 +392,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>1</ClangAsOpt>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls>--diag_suppress=A1608W</MiscControls>
               <Define></Define>
@@ -420,12 +421,187 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>app</GroupName>
           <Files>
             <File>
-              <FileName>Startup.s</FileName>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Startup.s</FilePath>
+              <FilePath>.\app\startup.s</FilePath>
+            </File>
+            <File>
+              <FileName>os_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\os_cfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>arm</GroupName>
+          <Files>
+            <File>
+              <FileName>os_cpu_a.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\arm\os_cpu_a.s</FilePath>
+            </File>
+            <File>
+              <FileName>os_cpu_c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\arm\os_cpu_c.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_int_a.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\arm\os_int_a.s</FilePath>
+            </File>
+            <File>
+              <FileName>os_cpu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\arm\os_cpu.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ucosii</GroupName>
+          <Files>
+            <File>
+              <FileName>Includes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ucosii\Includes.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_flag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_flag.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_mbox.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_mbox.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_mutex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_mutex.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_q.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_q.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_sem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_sem.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ucosii\os_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>ucos_ii.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ucosii\ucos_ii.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>source</GroupName>
+          <Files>
+            <File>
+              <FileName>config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\source\config.h</FilePath>
+            </File>
+            <File>
+              <FileName>LPC2294.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\source\LPC2294.h</FilePath>
+            </File>
+            <File>
+              <FileName>myI2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\myI2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>myI2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\source\myI2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>myLCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\myLCD.c</FilePath>
+            </File>
+            <File>
+              <FileName>myLCD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\source\myLCD.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>can</GroupName>
+          <Files>
+            <File>
+              <FileName>CanApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\can\CanApp.c</FilePath>
+            </File>
+            <File>
+              <FileName>CanApp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\can\CanApp.h</FilePath>
+            </File>
+            <File>
+              <FileName>CanFunc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\can\CanFunc.c</FilePath>
+            </File>
+            <File>
+              <FileName>CanFunc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\can\CanFunc.h</FilePath>
+            </File>
+            <File>
+              <FileName>CanReg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\can\CanReg.h</FilePath>
+            </File>
+            <File>
+              <FileName>Custom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\can\Custom.h</FilePath>
+            </File>
+            <File>
+              <FileName>IncludeCan.H</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\can\IncludeCan.H</FilePath>
             </File>
           </Files>
         </Group>

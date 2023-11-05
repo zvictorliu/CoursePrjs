@@ -11,10 +11,10 @@
 
 int main(void)
 {
-	unsigned char flag = 1;		// 避免statement is unreachable的警告
+	volatile unsigned char flag = 1;		// 避免statement is unreachable的警告
 
-	uint8  i= 0;
-	uint16 j= 0;
+	volatile uint8  i= 0;
+	volatile uint16 j= 0;
 	LCD_Init(); // LCD初始化
 	I2C_Init(); // I2C初始化
 	
@@ -27,8 +27,7 @@ int main(void)
 	LCD_SetMode(LCD_MODE_TEXT); // 写字符
 	LCD_TextOut(4, 0, "饮水思源");
 	LCD_TextOut(4, 1, " ..IE.. ");
-	LCD_TextOut(4, 2, " Kngboy ");
-	LCD_TextOut(4, 3, "20070912");
+ 	LCD_TextOut(4, 3, "20070912");
 	
 	while(flag)
 	{

@@ -4,7 +4,7 @@
 ;/* <<< Use Configuration Wizard in Context Menu >>>                          */ 
 ;/*****************************************************************************/
 ;/* This file is part of the uVision/ARM development tools.                   */
-;/* Copyright (c) 2005-2007 Keil Software. All rights reserved.               */
+;/* Copyright (c) 2005-2006 Keil Software. All rights reserved.               */
 ;/* This software may only be used under the terms of a valid, current,       */
 ;/* end user licence from KEIL for a compatible version of KEIL software      */
 ;/* development tools. Nothing else gives you the right to use this software. */
@@ -27,10 +27,7 @@
 ; *  from external memory starting at address 0x80000000.
 ; *
 ; *  RAM_MODE: when set the device is configured for code execution
-; *  from on-chip RAM starting at address 0x40000000.
-; *
-; *  EXTERNAL_MODE: when set the PIN2SEL values are written that enable
-; *  the external BUS at startup.
+; *  from on-chip RAM starting at address 0x40000000. 
 ; */
 
 
@@ -61,30 +58,26 @@ UND_Stack_Size  EQU     0x00000000
 SVC_Stack_Size  EQU     0x00000008
 ABT_Stack_Size  EQU     0x00000000
 FIQ_Stack_Size  EQU     0x00000000
-IRQ_Stack_Size  EQU     0x00000080
-USR_Stack_Size  EQU     0x00000400
+IRQ_Stack_Size  EQU     0x00000800
+USR_Stack_Size  EQU     0x00000800
 
-ISR_Stack_Size  EQU     (UND_Stack_Size + SVC_Stack_Size + ABT_Stack_Size + \
-                         FIQ_Stack_Size + IRQ_Stack_Size)
+Stack_Size      EQU     (UND_Stack_Size + SVC_Stack_Size + ABT_Stack_Size + \
+                         FIQ_Stack_Size + IRQ_Stack_Size + USR_Stack_Size)
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
+Stack_Mem       SPACE   Stack_Size
 
-Stack_Mem       SPACE   USR_Stack_Size
-__initial_sp    SPACE   ISR_Stack_Size
-
-Stack_Top
+Stack_Top       EQU     Stack_Mem + Stack_Size
 
 
 ;// <h> Heap Configuration
 ;//   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF>
 ;// </h>
 
-Heap_Size       EQU     0x00000000
+Heap_Size       EQU     0x00000800
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
-__heap_base
 Heap_Mem        SPACE   Heap_Size
-__heap_limit
 
 
 ; VPBDIV definitions
@@ -101,8 +94,8 @@ VPBDIV          EQU     0xE01FC100      ; VPBDIV Address
 ;//               <1=> XCLK Pin = CPU Clock
 ;//               <2=> XCLK Pin = CPU Clock / 2
 ;// </e>
-VPBDIV_SETUP    EQU     0
-VPBDIV_Val      EQU     0x00000000
+VPBDIV_SETUP    EQU     1
+VPBDIV_Val      EQU     0x00000001
 
 
 ; Phase Locked Loop (PLL) definitions
@@ -398,17 +391,10 @@ MEMMAP          EQU     0xE01FC040      ; Memory Mapping Control
                 SUB     R0, R0, #SVC_Stack_Size
 
 ;  Enter User Mode and set its Stack Pointer
-                MSR     CPSR_c, #Mode_USR
-                IF      :DEF:__MICROLIB
-
-                EXPORT __initial_sp
-
-                ELSE
-
+;                MSR     CPSR_c, #Mode_USR
+                MSR     CPSR_c, #Mode_SYS
                 MOV     SP, R0
                 SUB     SL, SP, #USR_Stack_Size
-
-                ENDIF
 
 
 ; Enter the C code
@@ -418,12 +404,6 @@ MEMMAP          EQU     0xE01FC040      ; Memory Mapping Control
                 BX      R0
 
 
-                IF      :DEF:__MICROLIB
-
-                EXPORT  __heap_base
-                EXPORT  __heap_limit
-
-                ELSE
 ; User Initial Stack & Heap
                 AREA    |.text|, CODE, READONLY
 
@@ -436,7 +416,6 @@ __user_initial_stackheap
                 LDR     R2, = (Heap_Mem +      Heap_Size)
                 LDR     R3, = Stack_Mem
                 BX      LR
-                ENDIF
 
 
                 END
